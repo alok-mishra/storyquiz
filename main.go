@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"regexp"
+	"strings"
 )
 
 const docxFile = "tables.docx"
@@ -25,7 +26,7 @@ type Row struct {
 }
 
 type Cell struct {
-	Content string `xml:"p"`
+	Content []string `xml:"p>r>t"`
 }
 
 func main() {
@@ -88,6 +89,15 @@ func main() {
 	var body Body
 	if err := xml.Unmarshal([]byte(cleanedXML), &body); err != nil {
 		log.Fatal(err)
+	}
+
+	// Combine all strings in Cell.Content into one string
+	for i, table := range body.Tables {
+		for j, row := range table.Rows {
+			for k, cell := range row.Cells {
+				body.Tables[i].Rows[j].Cells[k].Content = []string{strings.Join(cell.Content, "")}
+			}
+		}
 	}
 
 	jsonData, err := json.Marshal(body)
