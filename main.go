@@ -1,72 +1,77 @@
 package main
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"log"
 	"os"
-	"strings"
+	"regexp"
 )
 
-type Package struct {
-	XMLName xml.Name `xml:"http://schemas.microsoft.com/office/2006/xmlPackage package"`
-	Parts   []Part   `xml:"part"`
-}
-
-type Part struct {
-	Name        string `xml:"name,attr"`
-	ContentType string `xml:"contentType,attr"`
-	XMLData     struct {
-		Relationships Relationships `xml:"Relationships"`
-		Document      Document      `xml:"document"`
-	} `xml:"xmlData"`
-}
-
-type Relationships struct {
-	Relationships []Relationship `xml:"Relationship"`
-}
-
-type Relationship struct {
-	ID     string `xml:"Id,attr"`
-	Type   string `xml:"Type,attr"`
-	Target string `xml:"Target,attr"`
-}
-
-type Document struct {
-	XMLName xml.Name `xml:"http://schemas.openxmlformats.org/wordprocessingml/2006/main document"`
-	Body    Body     `xml:"body"`
-}
+const filePath = "tables.xml"
 
 type Body struct {
-	XMLName    xml.Name    `xml:"http://schemas.openxmlformats.org/wordprocessingml/2006/main body"`
-	Paragraphs []Paragraph `xml:"p"`
+	Tables []Table `xml:"tbl"`
 }
 
-type Paragraph struct {
-	XMLName xml.Name `xml:"http://schemas.openxmlformats.org/wordprocessingml/2006/main p"`
-	Text    string   `xml:",innerxml"`
+type Table struct {
+	Rows []Row `xml:"tr"`
+}
+
+type Row struct {
+	Cells []Cell `xml:"tc"`
+}
+
+type Cell struct {
+	Content string `xml:"p"`
 }
 
 func main() {
-	xmlFile, err := os.Open("document.xml")
+	// Open the file
+	file, err := os.Open(filePath)
 	if err != nil {
-		log.Fatalf("error opening XML file: %s", err)
+		log.Fatal(err)
 	}
-	defer xmlFile.Close()
+	defer file.Close()
 
-	var pkg Package
-	decoder := xml.NewDecoder(xmlFile)
-	if err := decoder.Decode(&pkg); err != nil {
-		log.Fatalf("error decoding XML: %s", err)
+	// Read the file contents
+	fileInfo, err := file.Stat()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fileSize := fileInfo.Size()
+	xmlData := make([]byte, fileSize)
+	_, err = file.Read(xmlData)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	for _, part := range pkg.Parts {
-		if part.ContentType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml" {
-			for _, p := range part.XMLData.Document.Body.Paragraphs {
-				// Remove XML tags and trim whitespace to extract text content
-				text := strings.TrimSpace(strings.ReplaceAll(p.Text, "<w:t>", ""))
-				fmt.Println(text)
-			}
-		}
+	cleanedXML := cleanXML(string(xmlData))
+	// fmt.Println(cleanedXML)
+
+	var body Body
+	if err := xml.Unmarshal([]byte(cleanedXML), &body); err != nil {
+		log.Fatal(err)
 	}
+
+	jsonData, err := json.Marshal(body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(string(jsonData))
+}
+
+func cleanXML(content string) string {
+
+	body := regexp.MustCompile(`(?s)<w:body>(.*?)<\/w:body>`).FindString(content)
+	// fmt.Println(body)
+	re := regexp.MustCompile(`<(/?)w:([^/>\s]+)[^/>]*(/?)>`)
+
+	cleanedBody := re.ReplaceAllString(body, "<$1$2$3>")
+
+	fmt.Println(cleanedBody)
+
+	return cleanedBody
 }
