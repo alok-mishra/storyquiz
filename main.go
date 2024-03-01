@@ -29,25 +29,25 @@ type Cell struct {
 	Content []string `xml:"p>r>t"`
 }
 
-func main() {
-	// Open the .docx file
-	docx, err := os.Open(docxFile)
+func e(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func main() {
+	// Open the .docx file
+	docx, err := os.Open(docxFile)
+	e(err)
 	defer docx.Close()
 
 	// Get information about the .docx file
 	docxInfo, err := docx.Stat()
-	if err != nil {
-		log.Fatal(err)
-	}
+	e(err)
 
 	// Read the document.xml file from the .docx file
 	r, err := zip.NewReader(docx, docxInfo.Size())
-	if err != nil {
-		log.Fatal(err)
-	}
+	e(err)
 
 	var xmlFile *zip.File
 	for _, f := range r.File {
@@ -62,9 +62,7 @@ func main() {
 	}
 
 	file, err := xmlFile.Open()
-	if err != nil {
-		log.Fatal(err)
-	}
+	e(err)
 	defer file.Close()
 
 	// Read the content of the document.xml file into a byte slice
@@ -87,9 +85,8 @@ func main() {
 	fmt.Println(cleanedXML)
 
 	var body Body
-	if err := xml.Unmarshal([]byte(cleanedXML), &body); err != nil {
-		log.Fatal(err)
-	}
+	err = xml.Unmarshal([]byte(cleanedXML), &body)
+	e(err)
 
 	// Combine all strings in Cell.Content into one string
 	for i, table := range body.Tables {
@@ -101,9 +98,7 @@ func main() {
 	}
 
 	jsonData, err := json.Marshal(body)
-	if err != nil {
-		log.Fatal(err)
-	}
+	e(err)
 
 	fmt.Println(string(jsonData))
 }
