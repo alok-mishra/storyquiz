@@ -82,7 +82,8 @@ func main() {
 	// fmt.Println(string(xmlData))
 
 	cleanedXML := cleanXML(string(xmlData))
-	fmt.Println(cleanedXML)
+	// fmt.Println(cleanedXML)
+	fmt.Println("Cleaned XML")
 
 	var body Body
 	err = xml.Unmarshal([]byte(cleanedXML), &body)
@@ -100,7 +101,13 @@ func main() {
 	jsonData, err := json.Marshal(body)
 	e(err)
 
-	fmt.Println(string(jsonData))
+	jsonFile, err := os.Create(strings.Split(docxFile, ".")[0] + ".json")
+	e(err)
+
+	_, err = jsonFile.Write(jsonData)
+	e(err)
+
+	// fmt.Println(string(jsonData))
 }
 
 func cleanXML(content string) string {
