@@ -29,6 +29,22 @@ type Cell struct {
 	Content []string `xml:"p>r>t"`
 }
 
+// Define structs to represent questions and options
+type Question struct {
+	QuestionNumber int      // The question number
+	QuestionText   string   // The question text
+	Options        []Option // The list of options for the question
+}
+
+type Option struct {
+	Text     string // The option text
+	IsAnswer bool   // Indicates if the option is a correct answer
+	Feedback string // The feedback for the option
+}
+
+// Initialize a slice to hold the extracted questions
+var questions []Question
+
 func e(err error) {
 	if err != nil {
 		log.Fatal(err)
@@ -90,14 +106,26 @@ func main() {
 	e(err)
 
 	// Combine all strings in Cell.Content into one string
-	for i, table := range body.Tables {
-		for j, row := range table.Rows {
-			for k, cell := range row.Cells {
-				body.Tables[i].Rows[j].Cells[k].Content = []string{strings.Join(cell.Content, "")}
+	for t, table := range body.Tables {
+		for r, row := range table.Rows {
+			for c, cell := range row.Cells {
+				body.Tables[t].Rows[r].Cells[c].Content = []string{strings.Join(cell.Content, "")}
 			}
 		}
 	}
 
+	// https://community.articulate.com/series/articulate-storyline-360/articles/storyline-360-importing-questions-from-excel-spreadsheets-and-text-files#text
+	/*
+		MC
+		5
+		Who was the first President of the United States?
+		*George Washington | That's correct!
+		John Adams | So close! John Adams was the second President and the first Vice President.
+		Thomas Jefferson | Actually, Thomas Jefferson was the first Secretary of State. He was also the third President.
+		Abraham Lincoln | Sorry, Abraham Lincoln was the sixteenth President.
+	*/
+
+	/*  JSON Output not needed, just use the XML data unmarshalled into the structs
 	jsonData, err := json.Marshal(body)
 	e(err)
 
@@ -107,7 +135,9 @@ func main() {
 	_, err = jsonFile.Write(jsonData)
 	e(err)
 
-	// fmt.Println(string(jsonData))
+	fmt.Println(string(jsonData))
+	*/
+
 }
 
 func cleanXML(content string) string {
