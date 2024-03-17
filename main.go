@@ -99,7 +99,7 @@ func main() {
 
 	cleanedXML := cleanXML(string(xmlData))
 	// fmt.Println(cleanedXML)
-	fmt.Println("Cleaned XML")
+	fmt.Println("Cleaned XML!")
 
 	var body Body
 	err = xml.Unmarshal([]byte(cleanedXML), &body)
@@ -114,6 +114,8 @@ func main() {
 		}
 	}
 
+	outputJSON(body)
+
 	// https://community.articulate.com/series/articulate-storyline-360/articles/storyline-360-importing-questions-from-excel-spreadsheets-and-text-files#text
 	/*
 		MC
@@ -124,8 +126,12 @@ func main() {
 		Thomas Jefferson | Actually, Thomas Jefferson was the first Secretary of State. He was also the third President.
 		Abraham Lincoln | Sorry, Abraham Lincoln was the sixteenth President.
 	*/
+}
 
-	/*  JSON Output not needed, just use the XML data unmarshalled into the structs
+func outputJSON(body Body) {
+	// JSON Output for comparison only. Format JSON before inspecting.
+	// Not needed, use the XML data unmarshalled into the structs directly.
+
 	jsonData, err := json.Marshal(body)
 	e(err)
 
@@ -135,9 +141,8 @@ func main() {
 	_, err = jsonFile.Write(jsonData)
 	e(err)
 
-	fmt.Println(string(jsonData))
-	*/
-
+	fmt.Println("Output JSON!")
+	// fmt.Println(string(jsonData))
 }
 
 func cleanXML(content string) string {
