@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -31,9 +32,9 @@ type Cell struct {
 
 // Define structs to represent questions and options
 type Question struct {
+	LearningObjective string   // The question objective
 	QuestionNumber    int      // The question number
 	QuestionText      string   // The question text
-	QuestionObjective string   // The question objective
 	Options           []Option // The list of options for the question
 }
 
@@ -108,23 +109,29 @@ func main() {
 
 	// outputJSON(body)
 
-	var learningObjectiveTables []*Table
+	var questionTables []*Table
 
 	for _, table := range body.Tables {
-		for _, row := range table.Rows[:2] { // Limit to the first two rows
-			// Check if the first cell contains "Learning Objective"
-			if len(row.Cells) > 0 && len(row.Cells[0].Content) > 0 &&
-				strings.Contains(row.Cells[0].Content[0], "Learning Objective") {
-				learningObjectiveTables = append(learningObjectiveTables, &table)
-				break
+		if len(table.Rows) >= 6 { // Limit to tables with at least 6 rows
+			for _, row := range table.Rows[1:3] { // Limit to the second and third rows
+				// Check if the first cell contains "Question #"
+				if len(row.Cells) > 0 && len(row.Cells[0].Content) > 0 &&
+					strings.Contains(row.Cells[0].Content[0], "Question #") {
+					questionTables = append(questionTables, &table)
+					break
+				}
 			}
 		}
 	}
 
-	// for _, table := range learningObjectiveTables {
-	// }
+	// outputJSON(learningObjectiveTables)
 
-	outputJSON(learningObjectiveTables)
+	for _, table := range questionTables {
+		// Extract questions from the table
+		extractQuestions(table)
+	}
+
+	outputJSON(questions)
 
 	// Combine all strings in Cell.Content into one string
 	for t, table := range body.Tables {
@@ -147,12 +154,13 @@ func main() {
 	*/
 }
 
-// func outputJSON(body Body) {
-func outputJSON(tables []*Table) {
+// func outputJSON(structure Body) {
+// func outputJSON(structure []*Table) {
+func outputJSON(structure []Question) {
 	// JSON Output for comparison only. Format JSON before inspecting.
 	// Not needed, use the XML data unmarshalled into the structs directly.
 
-	jsonData, err := json.Marshal(tables)
+	jsonData, err := json.Marshal(structure)
 	e(err)
 
 	jsonFile, err := os.Create(strings.Split(docxFile, ".")[0] + ".json")
@@ -173,4 +181,71 @@ func cleanXML(content string) string {
 	cleanedBody := re.ReplaceAllString(body, "<$1$2$3>")
 	// fmt.Println(cleanedBody)
 	return cleanedBody
+}
+
+func extractQuestions(table *Table) {
+	var learningObjective string
+	var questionNumber int
+	var questionText string
+	var options []Option
+
+	for _, row := range table.Rows {
+		// Check if the first cell contains "Question #"
+		if len(row.Cells) > 0 && len(row.Cells[0].Content) > 0 &&
+			strings.Contains(row.Cells[0].Content[0], "Learning Objective") {
+			// Extract learning objective from the next cell(s)
+			for i := 1; i < len(row.Cells); i++ {
+				learningObjective += strings.Join(row.Cells[i].Content, "")
+			}
+		}
+
+		if len(row.Cells) > 0 && len(row.Cells[0].Content) > 0 &&
+			strings.Contains(row.Cells[0].Content[0], "Question #:") {
+			// Extract question number from the next cell
+			if len(row.Cells) > 1 && len(row.Cells[1].Content) > 0 {
+				questionNumber, _ = strconv.Atoi(row.Cells[1].Content[0])
+			}
+		}
+
+		// Check if the first cell contains "Question Text:"
+		if len(row.Cells) > 0 && len(row.Cells[0].Content) > 0 &&
+			strings.Contains(row.Cells[0].Content[0], "Question Text:") {
+			// Extract question text from the next cell(s)
+			for i := 1; i < len(row.Cells); i++ {
+				questionText += strings.Join(row.Cells[i].Content, "")
+			}
+		}
+
+		// Check if the first cell contains "Instructions:"
+
+		// Check if the first cell contains "Option:"
+		if len(row.Cells) > 0 && len(row.Cells[0].Content) > 0 &&
+			strings.Contains(row.Cells[0].Content[0], "Option:") {
+			// Extract options from the next cell(s)
+			optionText := ""
+			for i := 1; i < len(row.Cells); i++ {
+				optionText += strings.Join(row.Cells[i].Content, "")
+			}
+
+			// Create an Option object
+			option := Option{
+				Text: optionText,
+				// Assuming you need to set IsAnswer and Feedback appropriately
+			}
+
+			// Append the option to the options slice
+			options = append(options, option)
+		}
+	}
+
+	// Create a Question object
+	question := Question{
+		QuestionNumber:    questionNumber,
+		QuestionText:      questionText,
+		LearningObjective: learningObjective,
+		Options:           options,
+	}
+
+	// Append the question to the questions slice
+	questions = append(questions, question)
 }
