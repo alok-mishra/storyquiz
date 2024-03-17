@@ -32,7 +32,7 @@ type Cell struct {
 
 // Define structs to represent questions and options
 type Question struct {
-	LearningObjective string   // The question objective
+	LearningObjective string   // The learning objective
 	QuestionNumber    int      // The question number
 	QuestionText      string   // The question text
 	Options           []Option // The list of options for the question
@@ -190,17 +190,19 @@ func extractQuestions(table *Table) {
 	var options []Option
 
 	for _, row := range table.Rows {
-		// Check if the first cell contains "Question #"
-		if len(row.Cells) > 0 && len(row.Cells[0].Content) > 0 &&
-			strings.Contains(row.Cells[0].Content[0], "Learning Objective") {
+
+		cellValid := len(row.Cells) > 0 && len(row.Cells[0].Content) > 0
+
+		// Check if the first cell contains "Learning Objective"
+		if cellValid && strings.Contains(row.Cells[0].Content[0], "Learning Objective") {
 			// Extract learning objective from the next cell(s)
 			for i := 1; i < len(row.Cells); i++ {
 				learningObjective += strings.Join(row.Cells[i].Content, "")
 			}
 		}
 
-		if len(row.Cells) > 0 && len(row.Cells[0].Content) > 0 &&
-			strings.Contains(row.Cells[0].Content[0], "Question #:") {
+		// Check if the first cell contains "Question #"
+		if cellValid && strings.Contains(row.Cells[0].Content[0], "Question #:") {
 			// Extract question number from the next cell
 			if len(row.Cells) > 1 && len(row.Cells[1].Content) > 0 {
 				questionNumber, _ = strconv.Atoi(row.Cells[1].Content[0])
@@ -208,19 +210,34 @@ func extractQuestions(table *Table) {
 		}
 
 		// Check if the first cell contains "Question Text:"
-		if len(row.Cells) > 0 && len(row.Cells[0].Content) > 0 &&
-			strings.Contains(row.Cells[0].Content[0], "Question Text:") {
+		if cellValid && strings.Contains(row.Cells[0].Content[0], "Question Text:") {
 			// Extract question text from the next cell(s)
 			for i := 1; i < len(row.Cells); i++ {
 				questionText += strings.Join(row.Cells[i].Content, "")
 			}
 		}
 
-		// Check if the first cell contains "Instructions:"
+		// Check if the first cell contains "Correct Answer:"
+		if cellValid && strings.Contains(row.Cells[0].Content[0], "Correct Answer:") {
+			// Extract correct answer from the next cell(s)
+			correctAnswer := ""
+			for i := 1; i < len(row.Cells); i++ {
+				correctAnswer += strings.Join(row.Cells[i].Content, "")
+			}
+
+			// Create an Option object
+			option := Option{
+				Text:     correctAnswer,
+				IsAnswer: true,
+				// Set Feedback later if available
+			}
+
+			// Append the option to the options slice
+			options = append(options, option)
+		}
 
 		// Check if the first cell contains "Option:"
-		if len(row.Cells) > 0 && len(row.Cells[0].Content) > 0 &&
-			strings.Contains(row.Cells[0].Content[0], "Option:") {
+		if cellValid && strings.Contains(row.Cells[0].Content[0], "Option:") {
 			// Extract options from the next cell(s)
 			optionText := ""
 			for i := 1; i < len(row.Cells); i++ {
@@ -229,8 +246,9 @@ func extractQuestions(table *Table) {
 
 			// Create an Option object
 			option := Option{
-				Text: optionText,
-				// Assuming you need to set IsAnswer and Feedback appropriately
+				Text:     optionText,
+				IsAnswer: false,
+				// Set Feedback later if available
 			}
 
 			// Append the option to the options slice
