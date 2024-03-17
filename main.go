@@ -31,9 +31,10 @@ type Cell struct {
 
 // Define structs to represent questions and options
 type Question struct {
-	QuestionNumber int      // The question number
-	QuestionText   string   // The question text
-	Options        []Option // The list of options for the question
+	QuestionNumber    int      // The question number
+	QuestionText      string   // The question text
+	QuestionObjective string   // The question objective
+	Options           []Option // The list of options for the question
 }
 
 type Option struct {
@@ -105,6 +106,26 @@ func main() {
 	err = xml.Unmarshal([]byte(cleanedXML), &body)
 	e(err)
 
+	// outputJSON(body)
+
+	var learningObjectiveTables []*Table
+
+	for _, table := range body.Tables {
+		for _, row := range table.Rows[:2] { // Limit to the first two rows
+			// Check if the first cell contains "Learning Objective"
+			if len(row.Cells) > 0 && len(row.Cells[0].Content) > 0 &&
+				strings.Contains(row.Cells[0].Content[0], "Learning Objective") {
+				learningObjectiveTables = append(learningObjectiveTables, &table)
+				break
+			}
+		}
+	}
+
+	// for _, table := range learningObjectiveTables {
+	// }
+
+	outputJSON(learningObjectiveTables)
+
 	// Combine all strings in Cell.Content into one string
 	for t, table := range body.Tables {
 		for r, row := range table.Rows {
@@ -113,8 +134,6 @@ func main() {
 			}
 		}
 	}
-
-	outputJSON(body)
 
 	// https://community.articulate.com/series/articulate-storyline-360/articles/storyline-360-importing-questions-from-excel-spreadsheets-and-text-files#text
 	/*
@@ -128,11 +147,12 @@ func main() {
 	*/
 }
 
-func outputJSON(body Body) {
+// func outputJSON(body Body) {
+func outputJSON(tables []*Table) {
 	// JSON Output for comparison only. Format JSON before inspecting.
 	// Not needed, use the XML data unmarshalled into the structs directly.
 
-	jsonData, err := json.Marshal(body)
+	jsonData, err := json.Marshal(tables)
 	e(err)
 
 	jsonFile, err := os.Create(strings.Split(docxFile, ".")[0] + ".json")
