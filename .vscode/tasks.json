@@ -14,16 +14,23 @@
       "presentation": { "reveal": "silent" }
     },
     {
+      "label": "Rename tables.json",
+      "type": "shell",
+      "command": "mv",
+      "args": ["tables.json", "tables-raw.json"],
+      "dependsOn": "Go Run Main"
+    },
+    {
       "label": "Format tables.json",
       "type": "shell",
       "command": "jq",
-      "args": [".", "${workspaceFolder}/tables-min.json", ">", "${workspaceFolder}/tables.json"],
+      "args": [".", "${workspaceFolder}/tables-raw.json", ">", "${workspaceFolder}/tables.json"],
       "group": {
         "kind": "build",
         "isDefault": true
       },
       "presentation": { "reveal": "silent" },
-      "dependsOn": "Go Run Main"
+      "dependsOn": "Rename tables.json"
     }
   ]
 }

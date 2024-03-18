@@ -163,7 +163,7 @@ func outputJSON(structure []Question) {
 	jsonData, err := json.Marshal(structure)
 	e(err)
 
-	jsonFile, err := os.Create(strings.Split(docxFile, ".")[0] + "-min.json")
+	jsonFile, err := os.Create(strings.Split(docxFile, ".")[0] + ".json")
 	e(err)
 
 	_, err = jsonFile.Write(jsonData)
@@ -193,28 +193,21 @@ func extractQuestions(table *Table) {
 
 		rowValid := len(row.Cells) > 0 && len(row.Cells[0].Content) > 0
 
-		// Check if the first cell contains "Learning Objective"
-		if rowValid && strings.Contains(row.Cells[0].Content[0], "Learning Objective") {
-			// Extract learning objective from the next cell(s)
-			if len(row.Cells) > 1 && len(row.Cells[1].Content) > 0 {
-				learningObjective = strings.Join(row.Cells[1].Content, "")
+		if learningObjective == "" {
+			findAndStore(&row, &learningObjective, "Learning Objective")
+		}
+
+		if questionNumber == 0 {
+			var qNum string
+			findAndStore(&row, &qNum, "Question #")
+
+			if qNum != "" {
+				questionNumber, _ = strconv.Atoi(qNum)
 			}
 		}
 
-		// Check if the first cell contains "Question #"
-		if rowValid && strings.Contains(row.Cells[0].Content[0], "Question #:") {
-			// Extract question number from the next cell
-			if len(row.Cells) > 1 && len(row.Cells[1].Content) > 0 {
-				questionNumber, _ = strconv.Atoi(row.Cells[1].Content[0])
-			}
-		}
-
-		// Check if the first cell contains "Question Text:"
-		if rowValid && strings.Contains(row.Cells[0].Content[0], "Question Text:") {
-			// Extract question text from the next cell(s)
-			for i := 1; i < len(row.Cells); i++ {
-				questionText += strings.Join(row.Cells[i].Content, "")
-			}
+		if questionText == "" {
+			findAndStore(&row, &questionText, "Question Text")
 		}
 
 		// Check if the first cell contains "Correct Answer:"
@@ -268,18 +261,15 @@ func extractQuestions(table *Table) {
 	questions = append(questions, question)
 }
 
-func storeRow(row *Row, text string) (rowContent string) {
+func findAndStore(row *Row, storeVal *string, text string) {
+
+	// fmt.Println("Finding and storing", text, "for", storeVal)
 	rowValid := len(row.Cells) > 0 && len(row.Cells[0].Content) > 0
 
 	// Check if the first cell contains the specified text
 	if rowValid && strings.Contains(row.Cells[0].Content[0], text) {
 		for i := 1; i < len(row.Cells); i++ {
-			rowContent += strings.Join(row.Cells[i].Content, "")
+			*storeVal += strings.Join(row.Cells[i].Content, "")
 		}
-		// fmt.Println(rowContent)
-
-		return rowContent
 	}
-
-	return ""
 }
