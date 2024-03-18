@@ -163,7 +163,7 @@ func outputJSON(structure []Question) {
 	jsonData, err := json.Marshal(structure)
 	e(err)
 
-	jsonFile, err := os.Create(strings.Split(docxFile, ".")[0] + ".json")
+	jsonFile, err := os.Create(strings.Split(docxFile, ".")[0] + "-min.json")
 	e(err)
 
 	_, err = jsonFile.Write(jsonData)
@@ -191,18 +191,18 @@ func extractQuestions(table *Table) {
 
 	for _, row := range table.Rows {
 
-		cellValid := len(row.Cells) > 0 && len(row.Cells[0].Content) > 0
+		rowValid := len(row.Cells) > 0 && len(row.Cells[0].Content) > 0
 
 		// Check if the first cell contains "Learning Objective"
-		if cellValid && strings.Contains(row.Cells[0].Content[0], "Learning Objective") {
+		if rowValid && strings.Contains(row.Cells[0].Content[0], "Learning Objective") {
 			// Extract learning objective from the next cell(s)
-			for i := 1; i < len(row.Cells); i++ {
-				learningObjective += strings.Join(row.Cells[i].Content, "")
+			if len(row.Cells) > 1 && len(row.Cells[1].Content) > 0 {
+				learningObjective = strings.Join(row.Cells[1].Content, "")
 			}
 		}
 
 		// Check if the first cell contains "Question #"
-		if cellValid && strings.Contains(row.Cells[0].Content[0], "Question #:") {
+		if rowValid && strings.Contains(row.Cells[0].Content[0], "Question #:") {
 			// Extract question number from the next cell
 			if len(row.Cells) > 1 && len(row.Cells[1].Content) > 0 {
 				questionNumber, _ = strconv.Atoi(row.Cells[1].Content[0])
@@ -210,7 +210,7 @@ func extractQuestions(table *Table) {
 		}
 
 		// Check if the first cell contains "Question Text:"
-		if cellValid && strings.Contains(row.Cells[0].Content[0], "Question Text:") {
+		if rowValid && strings.Contains(row.Cells[0].Content[0], "Question Text:") {
 			// Extract question text from the next cell(s)
 			for i := 1; i < len(row.Cells); i++ {
 				questionText += strings.Join(row.Cells[i].Content, "")
@@ -218,7 +218,7 @@ func extractQuestions(table *Table) {
 		}
 
 		// Check if the first cell contains "Correct Answer:"
-		if cellValid && strings.Contains(row.Cells[0].Content[0], "Correct Answer:") {
+		if rowValid && strings.Contains(row.Cells[0].Content[0], "Correct Answer:") {
 			// Extract correct answer from the next cell(s)
 			correctAnswer := ""
 			for i := 1; i < len(row.Cells); i++ {
@@ -237,7 +237,7 @@ func extractQuestions(table *Table) {
 		}
 
 		// Check if the first cell contains "Option:"
-		if cellValid && strings.Contains(row.Cells[0].Content[0], "Option:") {
+		if rowValid && strings.Contains(row.Cells[0].Content[0], "Option:") {
 			// Extract options from the next cell(s)
 			optionText := ""
 			for i := 1; i < len(row.Cells); i++ {
@@ -266,4 +266,20 @@ func extractQuestions(table *Table) {
 
 	// Append the question to the questions slice
 	questions = append(questions, question)
+}
+
+func storeRow(row *Row, text string) (rowContent string) {
+	rowValid := len(row.Cells) > 0 && len(row.Cells[0].Content) > 0
+
+	// Check if the first cell contains the specified text
+	if rowValid && strings.Contains(row.Cells[0].Content[0], text) {
+		for i := 1; i < len(row.Cells); i++ {
+			rowContent += strings.Join(row.Cells[i].Content, "")
+		}
+		// fmt.Println(rowContent)
+
+		return rowContent
+	}
+
+	return ""
 }

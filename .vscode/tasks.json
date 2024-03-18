@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Go Run Main",
+      "type": "shell",
+      "command": "go",
+      "args": ["run", "main.go"],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": ["$go"],
+      "presentation": { "reveal": "silent" }
+    },
+    {
+      "label": "Format tables.json",
+      "type": "shell",
+      "command": "jq",
+      "args": [".", "${workspaceFolder}/tables-min.json", ">", "${workspaceFolder}/tables.json"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": { "reveal": "silent" },
+      "dependsOn": "Go Run Main"
+    }
+  ]
+}
