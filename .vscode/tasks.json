@@ -18,6 +18,7 @@
       "type": "shell",
       "command": "mv",
       "args": ["tables.json", "tables-raw.json"],
+      "presentation": { "reveal": "silent" },
       "dependsOn": "Go Run Main"
     },
     {

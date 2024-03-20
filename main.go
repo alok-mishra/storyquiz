@@ -133,16 +133,8 @@ func main() {
 
 	outputJSON(questions)
 
-	// Combine all strings in Cell.Content into one string
-	for t, table := range body.Tables {
-		for r, row := range table.Rows {
-			for c, cell := range row.Cells {
-				body.Tables[t].Rows[r].Cells[c].Content = []string{strings.Join(cell.Content, "")}
-			}
-		}
-	}
-
 	// https://community.articulate.com/series/articulate-storyline-360/articles/storyline-360-importing-questions-from-excel-spreadsheets-and-text-files#text
+	// Storyline Text Import Format
 	/*
 		MC
 		5
@@ -152,6 +144,65 @@ func main() {
 		Thomas Jefferson | Actually, Thomas Jefferson was the first Secretary of State. He was also the third President.
 		Abraham Lincoln | Sorry, Abraham Lincoln was the sixteenth President.
 	*/
+
+	outputStorylineText(questions)
+
+}
+
+func outputStorylineText(questions []Question) {
+	// Create a new file to write the questions to
+	file, err := os.Create(strings.Split(docxFile, ".")[0] + ".txt")
+	e(err)
+	defer file.Close()
+
+	// Write the questions to the file
+	for _, question := range questions {
+		// Write the question type
+		_, err = file.WriteString("MC\n")
+		e(err)
+
+		// Write the question number
+		_, err = file.WriteString(strconv.Itoa(question.QuestionNumber) + "\n")
+		e(err)
+
+		// Write the question text
+		_, err = file.WriteString(question.QuestionText + "\n")
+		e(err)
+
+		// Write the options
+		for _, option := range question.Options {
+			// Write the option text
+
+			textPrefix := ""
+			feedback := option.Feedback
+
+			if feedback == "" {
+				feedback = "That is incorrect."
+			}
+
+			if option.IsAnswer {
+				textPrefix = "*"
+				feedback = "That's correct!"
+			}
+
+			optionText := option.Text + " | " + feedback
+
+			_, err = file.WriteString(textPrefix + optionText)
+
+			// Write the feedback if available
+			if option.Feedback != "" {
+				_, err = file.WriteString(option.Feedback)
+			}
+
+			// Write a new line
+			_, err = file.WriteString("\n")
+		}
+
+		// Write a new line
+		_, err = file.WriteString("\n")
+	}
+
+	fmt.Println("Output Storyline Text!")
 }
 
 // func outputJSON(structure Body) {
