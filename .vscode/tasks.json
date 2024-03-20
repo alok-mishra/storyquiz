@@ -17,7 +17,7 @@
       "label": "Rename tables.json",
       "type": "shell",
       "command": "mv",
-      "args": ["tables.json", "tables-raw.json"],
+      "args": ["tables.json", "tables.raw"],
       "presentation": { "reveal": "silent" },
       "dependsOn": "Go Run Main"
     },
@@ -25,7 +25,7 @@
       "label": "Format tables.json",
       "type": "shell",
       "command": "jq",
-      "args": [".", "${workspaceFolder}/tables-raw.json", ">", "${workspaceFolder}/tables.json"],
+      "args": [".", "${workspaceFolder}/tables.raw", ">", "${workspaceFolder}/tables.json"],
       "group": {
         "kind": "build",
         "isDefault": true
