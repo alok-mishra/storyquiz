@@ -1,5 +1,6 @@
 *.docx
 *.xml
+*.txt
 
 !tables.*
 
