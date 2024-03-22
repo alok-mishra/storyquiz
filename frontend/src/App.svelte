@@ -2,19 +2,34 @@
   // import logo from './assets/images/logo-universal.png';
   import './app.css';
   import logo from '../../build/appicon.png';
-  import { Greet } from '../wailsjs/go/main/App.js';
+  import { Quiz } from '../wailsjs/go/main/App.js';
 
   let resultText: string = 'Please drop your file here 👇';
   let name: string;
+  let file: File;
 
-  function greet(): void {
-    // TODO:
-    // Greet(name).then((result) => (resultText = result));
+  // function quiz(): void {
+  //   // send file to backend
+  //   Quiz(file).then((result) => (resultText = result));
+  // }
+
+  function quiz(): void {
+    if (!file) {
+      resultText = 'Please drop a file first';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const fileContents = reader.result as string;
+      Quiz(btoa(fileContents)).then((result) => (resultText = result));
+    };
+    reader.readAsBinaryString(file);
   }
 
   function handleDrop(event: DragEvent): void {
     event.preventDefault();
-    const file = event.dataTransfer.files[0];
+    file = event.dataTransfer.files[0];
     name = file.name;
 
     console.log(file);
@@ -25,7 +40,7 @@
       resultText = 'Seriously?! 🤨 Only DOCX or CSV files are allowed!';
     } else {
       resultText = `Exporting: ${name}`;
-      greet();
+      quiz();
     }
   }
 </script>

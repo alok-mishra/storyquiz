@@ -1,8 +1,9 @@
 package main
 
 import (
+	"changeme/storyquiz"
 	"context"
-	"fmt"
+	"encoding/base64"
 )
 
 // App struct
@@ -21,8 +22,10 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	a.storyquiz()
-	return fmt.Sprintf("Hello %s, It's show time!", name)
+func (a *App) Quiz(file string) string {
+	decoded, err := base64.StdEncoding.DecodeString(file)
+	if err != nil {
+		return err.Error()
+	}
+	return storyquiz.Quiz(decoded)
 }

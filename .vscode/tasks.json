@@ -2,10 +2,10 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Go Run Main",
+      "label": "Go Run StoryQuiz",
       "type": "shell",
       "command": "go",
-      "args": ["run", "main.go"],
+      "args": ["run", "storyquiz/storyquiz.go"],
       "group": {
         "kind": "build",
         "isDefault": false
@@ -19,7 +19,7 @@
       "command": "mv",
       "args": ["tables.json", "tables.raw"],
       "presentation": { "reveal": "silent" },
-      "dependsOn": "Go Run Main"
+      "dependsOn": "Go Run StoryQuiz"
     },
     {
       "label": "Format tables.json",
