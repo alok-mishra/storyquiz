@@ -23,7 +23,7 @@
     go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
     paru -Sy
-    paru -S webkit2gtk
+    paru -S gtk3 webkit2gtk
 
     wails init -n storyquiz -t svelte-ts
     wails build -platform windows
