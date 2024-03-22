@@ -70,9 +70,7 @@ func Quiz(decodedBytes []byte) string {
 	// e(err)
 
 	r, err := zip.NewReader(bytes.NewReader(decodedBytes), int64(len(decodedBytes)))
-	if err != nil {
-		log.Fatal(err)
-	}
+	e(err)
 
 	var xmlFile *zip.File
 	for _, f := range r.File {
@@ -116,7 +114,7 @@ func Quiz(decodedBytes []byte) string {
 
 	// outputJSON(body)
 
-	var questionTables []*Table
+	var questionTables []Table
 
 	for _, table := range body.Tables {
 		if len(table.Rows) >= 6 { // Limit to tables with at least 6 rows
@@ -124,14 +122,15 @@ func Quiz(decodedBytes []byte) string {
 				// Check if the first cell contains "Question #"
 				if len(row.Cells) > 0 && len(row.Cells[0].Content) > 0 &&
 					strings.Contains(row.Cells[0].Content[0], "Question #") {
-					questionTables = append(questionTables, &table)
+					fmt.Println(row.Cells[1].Content[0])
+					questionTables = append(questionTables, table)
 					break
 				}
 			}
 		}
 	}
 
-	// outputJSON(learningObjectiveTables)
+	// outputJSON(questionTables)
 
 	for _, table := range questionTables {
 		// Extract questions from the table
@@ -214,7 +213,7 @@ func outputStorylineText(questions []Question) {
 }
 
 // func outputJSON(structure Body) {
-// func outputJSON(structure []*Table) {
+// func outputJSON(structure []Table) {
 func outputJSON(structure []Question) {
 	// JSON Output for comparison only. Format JSON before inspecting.
 	// Not needed, use the XML data unmarshalled into the structs directly.
@@ -242,7 +241,7 @@ func cleanXML(content string) string {
 	return cleanedBody
 }
 
-func extractQuestions(table *Table) {
+func extractQuestions(table Table) {
 	var learningObjective string
 	var questionNumber int
 	var questionText string
