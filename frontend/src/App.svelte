@@ -1,66 +1,58 @@
 <script lang="ts">
-  import logo from './assets/images/logo-universal.png';
+  // import logo from './assets/images/logo-universal.png';
+  import './app.css';
+  import logo from '../../build/appicon.png';
   import { Greet } from '../wailsjs/go/main/App.js';
 
-  let resultText: string = 'Please enter your name below 👇';
+  let resultText: string = 'Please drop your file here 👇';
   let name: string;
 
   function greet(): void {
-    Greet(name).then((result) => (resultText = result));
+    // TODO:
+    // Greet(name).then((result) => (resultText = result));
   }
 
   function handleDrop(event: DragEvent): void {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     name = file.name;
-    greet();
+
     console.log(file);
+    if (
+      file.type !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' &&
+      file.type !== 'text/csv'
+    ) {
+      resultText = 'Seriously?! 🤨 Only DOCX or CSV files are allowed!';
+    } else {
+      resultText = `Exporting: ${name}`;
+      greet();
+    }
   }
 </script>
 
-<main>
-  <img alt="Wails logo" id="logo" src={logo} />
-  <div class="result" id="result">{resultText}</div>
-  <div class="input-box" id="input">
-    <div class="drop-zone" on:drop={handleDrop} on:dragover={(e) => e.preventDefault()}>
-      Drag & Drop a DOCX file here
-    </div>
-    <input autocomplete="off" bind:value={name} class="input" id="name" type="text" />
-    <button class="btn" on:click={greet}>Greet</button>
-  </div>
+<main class="flex flex-col items-center">
+  <img id="logo" class="w-40 p-4" alt="StoryQuiz Logo" src={logo} />
+  <h1 class="text-xl font-black m-4">Storyline Quiz Exporter</h1>
+  <div id="result" class="">{resultText}</div>
+  <article
+    id="drop"
+    class="border-2 border-dotted p-6 m-4 rounded-lg"
+    on:drop={handleDrop}
+    on:dragover={(e) => e.preventDefault()}
+    on:dragenter={(e) => {
+      e.preventDefault();
+      e.target.classList.add('bg-slate-600');
+    }}
+    on:dragleave={(e) => {
+      e.preventDefault();
+      e.target.classList.remove('bg-slate-600');
+    }}
+  >
+    Drag & Drop a DOCX or CSV file
+  </article>
 </main>
 
 <style>
-  .drop-zone {
-    border: 2px dashed #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .drop-zone:hover {
-    background-color: #f9f9f9;
-  }
-
-  #logo {
-    display: block;
-    width: 50%;
-    height: 50%;
-    margin: auto;
-    padding: 10% 0 0;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    background-origin: content-box;
-  }
-
-  .result {
-    height: 20px;
-    line-height: 20px;
-    margin: 1.5rem auto;
-  }
-
   .input-box .btn {
     width: 60px;
     height: 30px;
