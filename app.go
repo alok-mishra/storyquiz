@@ -1,9 +1,10 @@
 package main
 
 import (
-	"changeme/storyquiz"
 	"context"
 	"encoding/base64"
+
+	"alokmishra.com/storyquiz/storyquiz"
 )
 
 // App struct

@@ -2,6 +2,9 @@ package main
 
 import (
 	"embed"
+	"encoding/base64"
+	"log"
+	"os"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -10,6 +13,12 @@ import (
 
 //go:embed all:frontend/dist
 var assets embed.FS
+
+func e(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 
 func main() {
 	// Create an instance of the app structure
@@ -31,7 +40,17 @@ func main() {
 	})
 
 	if err != nil {
-		println("Error:", err.Error())
+		println("Error starting Wails app:", err.Error())
+
+		// Read the .docx file into a byte slice
+		docxBytes, err := os.ReadFile("tables.docx")
+		e(err)
+
+		// Encode the byte slice to base64
+		encodedData := base64.StdEncoding.EncodeToString(docxBytes)
+
+		println(app.Quiz(encodedData))
+
 	}
 
 }

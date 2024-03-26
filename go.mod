@@ -1,4 +1,4 @@
-module changeme
+module alokmishra.com/storyquiz
 
 go 1.21
 
@@ -35,5 +35,3 @@ require (
 	golang.org/x/sys v0.16.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 )
-
-// replace github.com/wailsapp/wails/v2 v2.8.0 => C:\Users\alok\go\pkg\mod
