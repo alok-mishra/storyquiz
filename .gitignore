@@ -1,8 +1,12 @@
+*.csv
 *.docx
+*.txt
+*.xls
+*.xlsm
 *.xml
 *.txt
 
-!tables.*
+!document.*
 
 build/bin
 node_modules

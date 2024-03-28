@@ -43,7 +43,7 @@ func main() {
 		println("Error starting Wails app:", err.Error())
 
 		// Read the .docx file into a byte slice
-		docxBytes, err := os.ReadFile("tables.docx")
+		docxBytes, err := os.ReadFile("data/document.docx")
 		e(err)
 
 		// Encode the byte slice to base64

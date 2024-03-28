@@ -1,37 +1,37 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "Go Run StoryQuiz",
-      "type": "shell",
-      "command": "go",
-      "args": ["run", "storyquiz/storyquiz.go"],
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      },
-      "problemMatcher": ["$go"],
-      "presentation": { "reveal": "silent" }
-    },
-    {
-      "label": "Rename tables.json",
-      "type": "shell",
-      "command": "mv",
-      "args": ["tables.json", "tables.raw"],
-      "presentation": { "reveal": "silent" },
-      "dependsOn": "Go Run StoryQuiz"
-    },
-    {
-      "label": "Format tables.json",
-      "type": "shell",
-      "command": "jq",
-      "args": [".", "${workspaceFolder}/tables.raw", ">", "${workspaceFolder}/tables.json"],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "presentation": { "reveal": "silent" },
-      "dependsOn": "Rename tables.json"
-    }
-  ]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Go Run",
+            "type": "shell",
+            "command": "go",
+            "args": ["run", "."],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": ["$go"],
+            "presentation": { "reveal": "silent" }
+        },
+        {
+            "label": "Rename JSON",
+            "type": "shell",
+            "command": "mv",
+            "args": ["data/document.json", "data/document.raw"],
+            "presentation": { "reveal": "silent" },
+            "dependsOn": "Go Run"
+        },
+        {
+            "label": "Format JSON",
+            "type": "shell",
+            "command": "jq",
+            "args": [".", "${workspaceFolder}/data/document.raw", ">", "${workspaceFolder}/data/document.json"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": { "reveal": "silent" },
+            "dependsOn": "Rename JSON"
+        }
+    ]
 }

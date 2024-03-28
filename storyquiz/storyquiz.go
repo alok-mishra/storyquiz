@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-const docxFile = "tables.docx"
+const docxFile = "data/document.docx"
 
 type Body struct {
 	Tables []Table `xml:"tbl"`
