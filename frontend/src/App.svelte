@@ -11,43 +11,26 @@
     import logo from '../../build/appicon.png';
     import { Quiz } from '../wailsjs/go/main/App.js';
 
-    let resultText: string = 'Please drop your file here 👇';
+    import DragDrop from './components/DragDrop.svelte';
+
+    let message: string = '👇 Please drop your file here 👇';
     let name: string;
     let file: File;
 
-    // function quiz(): void {
-    //   // send file to backend
-    //   Quiz(file).then((result) => (resultText = result));
-    // }
+    function onDrop(file: File, resultText: string): void {
+        message = resultText;
 
-    function quiz(): void {
-        if (!file) {
-            resultText = 'Please drop a file first';
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = () => {
-            const fileContents = reader.result as string;
-            Quiz(btoa(fileContents)).then((result) => (resultText = result));
-        };
-        reader.readAsBinaryString(file);
-    }
-
-    function handleDrop(event: DragEvent): void {
-        event.preventDefault();
-        file = event.dataTransfer.files[0];
-        name = file.name;
-
-        console.log(file);
-        if (
-            file.type !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' &&
-            file.type !== 'text/csv'
-        ) {
-            resultText = 'Seriously?! 🤨 Only DOCX or CSV files are allowed!';
-        } else {
-            resultText = `Exporting: ${name}`;
-            quiz();
+        if (file) {
+            console.log('reading file...', file);
+            name = file.name;
+            const reader = new FileReader();
+            reader.onload = () => {
+                const fileContents = reader.result as string;
+                Quiz(btoa(fileContents)).then((result) => {
+                    message = result;
+                });
+            };
+            reader.readAsBinaryString(file);
         }
     }
 </script>
@@ -60,40 +43,13 @@
         <img class="w-40 p-4 absolute -bottom-0 -left-20" alt="Storyline Logo" src={storyline} />
         <img class="w-40 p-4 absolute -bottom-0 -right-20" alt="CSOD Logo" src={csod} />
     </section>
-    <div id="result" class="">{resultText}</div>
+    <div id="message" class="">{message}</div>
     <section class="dragdrop flex">
-        <article
-            id="drop"
-            class="border-2 border-dotted p-6 m-4 rounded-lg bg-opacity-60 max-w-60"
-            on:drop={handleDrop}
-            on:dragover={(e) => e.preventDefault()}
-            on:dragenter={(e) => {
-                e.preventDefault();
-                e.target.classList.add('bg-[#c560b3]');
-            }}
-            on:dragleave={(e) => {
-                e.preventDefault();
-                e.target.classList.remove('bg-[#c560b3]');
-            }}
-        >
-            Drag & Drop a Word (.docx) or CSV file here
-        </article>
-
-        <article
-            id="drop"
-            class="border-2 border-dotted p-6 m-4 rounded-lg bg-opacity-60 max-w-60"
-            on:drop={handleDrop}
-            on:dragover={(e) => e.preventDefault()}
-            on:dragenter={(e) => {
-                e.preventDefault();
-                e.target.classList.add('bg-[#fa4616]');
-            }}
-            on:dragleave={(e) => {
-                e.preventDefault();
-                e.target.classList.remove('bg-[#fa4616]');
-            }}
-        >
-            Drag & Drop an Excel (.xlsx) file here
-        </article>
+        <DragDrop dropColor={'#c560b3'} fileTypes={['docx', 'xlsm']} {onDrop}>
+            Drop a Word or Excel file here for Storyline Quiz
+        </DragDrop>
+        <DragDrop dropColor={'#fa4616'} fileTypes={['xls', 'xlsx', 'xlsm']} {onDrop}>
+            Drop a Excel file here for CSOD Quiz
+        </DragDrop>
     </section>
 </main>

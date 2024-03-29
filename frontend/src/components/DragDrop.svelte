@@ -1,0 +1,49 @@
+<script lang="ts">
+    export let fileTypes: string[] = [],
+        onDrop: (file: File, resultText: string) => void,
+        dropColor: string = '#c560b3';
+    console.log(fileTypes);
+
+    const fileTypeMap = {
+        // file type map of allowed file types
+        csv: 'text/csv',
+        docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        xls: 'application/vnd.ms-excel',
+        xlsm: 'application/vnd.ms-excel.sheet.macroEnabled.12',
+        xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    };
+
+    function handleDrop(event: DragEvent): void {
+        event.preventDefault();
+        (event.target as HTMLElement).classList.remove(`bg-[${dropColor}]`);
+        const file = event.dataTransfer.files[0];
+
+        console.log(file.type);
+        const allowedTypes = fileTypes.map((type) => fileTypeMap[type] || type);
+
+        if (allowedTypes.includes(file.type)) {
+            onDrop(file, `Exporting: ${file.name}`);
+        } else {
+            onDrop(null, `🤨 Seriously?! Only ${fileTypes.join(' or ')} files are allowed!`);
+        }
+    }
+</script>
+
+<article
+    id="drop"
+    class="border-2 border-dotted p-6 m-4 rounded-lg bg-opacity-60 max-w-60"
+    on:drop={handleDrop}
+    on:dragover={(e) => e.preventDefault()}
+    on:dragenter={(e) => {
+        e.preventDefault();
+        e.target.classList.add(`bg-[${dropColor}]`);
+    }}
+    on:dragleave={(e) => {
+        e.preventDefault();
+        // e.target.classList.remove('bg-[#fa4616]');
+        // repalce with dropColor
+        e.target.classList.remove(`bg-[${dropColor}]`);
+    }}
+>
+    <slot>Drag & Drop a file here</slot>
+</article>
