@@ -6,7 +6,7 @@
 *.xml
 *.txt
 
-!document.*
+/data
 
 build/bin
 node_modules
