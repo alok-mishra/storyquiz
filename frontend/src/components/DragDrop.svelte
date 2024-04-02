@@ -1,7 +1,8 @@
 <script lang="ts">
     export let fileTypes: string[] = [],
         onDrop: (file: File, resultText: string) => void,
-        dropColor: string = '#c560b3';
+        dropColor: string = 'bg-stone-400';
+
     console.log(fileTypes);
 
     const fileTypeMap = {
@@ -36,13 +37,13 @@
     on:dragover={(e) => e.preventDefault()}
     on:dragenter={(e) => {
         e.preventDefault();
-        e.target.classList.add(`bg-[${dropColor}]`);
+        e.target.classList.add(dropColor);
     }}
     on:dragleave={(e) => {
         e.preventDefault();
         // e.target.classList.remove('bg-[#fa4616]');
         // repalce with dropColor
-        e.target.classList.remove(`bg-[${dropColor}]`);
+        e.target.classList.remove(dropColor);
     }}
 >
     <slot>Drag & Drop a file here</slot>

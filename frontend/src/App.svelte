@@ -45,10 +45,10 @@
     </section>
     <div id="message" class="">{message}</div>
     <section class="dragdrop flex">
-        <DragDrop dropColor={'#c560b3'} fileTypes={['docx', 'xlsm']} {onDrop}>
+        <DragDrop dropColor={'bg-storyline'} fileTypes={['docx', 'xlsm']} {onDrop}>
             Drop a Word or Excel file here for Storyline Quiz
         </DragDrop>
-        <DragDrop dropColor={'#fa4616'} fileTypes={['xls', 'xlsx', 'xlsm']} {onDrop}>
+        <DragDrop dropColor={'bg-csod'} fileTypes={['xls', 'xlsx', 'xlsm']} {onDrop}>
             Drop a Excel file here for CSOD Quiz
         </DragDrop>
     </section>
