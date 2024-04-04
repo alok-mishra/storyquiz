@@ -54,7 +54,7 @@ func e(err error) {
 	}
 }
 
-func Quiz(decodedBytes []byte) string {
+func Quiz(decodedBytes []byte, fileName string, fileType string) string {
 
 	// // Open the .docx file
 	// docx, err := os.Open(docxFile)

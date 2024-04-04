@@ -14,19 +14,20 @@
     import DragDrop from './components/DragDrop.svelte';
 
     let message: string = '👇 Please drop your file here 👇';
-    let name: string;
-    let file: File;
+    let fileName: string;
 
     function onDrop(file: File, resultText: string): void {
         message = resultText;
 
         if (file) {
             console.log('reading file...', file);
-            name = file.name;
+            fileName = file.name;
+            const fileType = fileName.split('.').pop(); // file extension
+
             const reader = new FileReader();
             reader.onload = () => {
                 const fileContents = reader.result as string;
-                Quiz(btoa(fileContents)).then((result) => {
+                Quiz(btoa(fileContents), fileName, fileType).then((result) => {
                     message = result;
                 });
             };
