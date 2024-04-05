@@ -14,19 +14,20 @@
     import DragDrop from './components/DragDrop.svelte';
 
     let message: string = '👇 Please drop your file here 👇';
-    let name: string;
-    let file: File;
+    let fileName: string;
 
     function onDrop(file: File, resultText: string): void {
         message = resultText;
 
         if (file) {
             console.log('reading file...', file);
-            name = file.name;
+            fileName = file.name;
+            const fileType = fileName.split('.').pop(); // file extension
+
             const reader = new FileReader();
             reader.onload = () => {
                 const fileContents = reader.result as string;
-                Quiz(btoa(fileContents)).then((result) => {
+                Quiz(btoa(fileContents), fileName, fileType).then((result) => {
                     message = result;
                 });
             };
@@ -45,10 +46,10 @@
     </section>
     <div id="message" class="">{message}</div>
     <section class="dragdrop flex">
-        <DragDrop dropColor={'#c560b3'} fileTypes={['docx', 'xlsm']} {onDrop}>
+        <DragDrop dropColor={'bg-storyline'} fileTypes={['docx', 'xlsm']} {onDrop}>
             Drop a Word or Excel file here for Storyline Quiz
         </DragDrop>
-        <DragDrop dropColor={'#fa4616'} fileTypes={['xls', 'xlsx', 'xlsm']} {onDrop}>
+        <DragDrop dropColor={'bg-csod'} fileTypes={['xls', 'xlsx', 'xlsm']} {onDrop}>
             Drop a Excel file here for CSOD Quiz
         </DragDrop>
     </section>

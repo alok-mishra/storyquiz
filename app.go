@@ -23,10 +23,13 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-func (a *App) Quiz(file string) string {
+func (a *App) shutdown(ctx context.Context) {
+}
+
+func (a *App) Quiz(file string, fileName string, fileType string) string {
 	decoded, err := base64.StdEncoding.DecodeString(file)
 	if err != nil {
 		return err.Error()
 	}
-	return storyquiz.Quiz(decoded)
+	return storyquiz.Quiz(decoded, fileName, fileType)
 }

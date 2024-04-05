@@ -34,6 +34,7 @@ func main() {
 		},
 		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
 		OnStartup:        app.startup,
+		OnShutdown:       app.shutdown,
 		Bind: []interface{}{
 			app,
 		},
@@ -49,7 +50,7 @@ func main() {
 		// Encode the byte slice to base64
 		encodedData := base64.StdEncoding.EncodeToString(docxBytes)
 
-		println(app.Quiz(encodedData))
+		println(app.Quiz(encodedData, "document.docx", "docx"))
 
 	}
 

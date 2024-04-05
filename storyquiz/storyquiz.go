@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-const docxFile = "data/document.docx"
+var outputFile string
 
 type Body struct {
 	Tables []Table `xml:"tbl"`
@@ -54,20 +54,21 @@ func e(err error) {
 	}
 }
 
-func Quiz(decodedBytes []byte) string {
+func Quiz(decodedBytes []byte, fileName string, fileType string) string {
 
-	// // Open the .docx file
-	// docx, err := os.Open(docxFile)
-	// e(err)
-	// defer docx.Close()
+	// isWord := fileType == "doc" || fileType == "docx"
+	isExcel := fileType == "xlsx" || fileType == "xls" || fileType == "xlsm"
 
-	// // Get information about the .docx file
-	// docxInfo, err := docx.Stat()
-	// e(err)
+	if isExcel {
+		questions = ProcessExcel(decodedBytes)
+		return fileName + " exported!"
+	}
 
-	// // Read the document.xml file from the .docx file
-	// r, err := zip.NewReader(docx, docxInfo.Size())
-	// e(err)
+	if _, err := os.Stat("data/"); os.IsNotExist(err) {
+		outputFile = "document" //TODO: get the file name from the stream
+	} else {
+		outputFile = "data/document"
+	}
 
 	r, err := zip.NewReader(bytes.NewReader(decodedBytes), int64(len(decodedBytes)))
 	e(err)
@@ -137,6 +138,8 @@ func Quiz(decodedBytes []byte) string {
 		extractQuestions(table)
 	}
 
+	// TODO: Outputting a file causes the app to crash. Investigate why.
+
 	outputJSON(questions)
 
 	// https://community.articulate.com/series/articulate-storyline-360/articles/storyline-360-importing-questions-from-excel-spreadsheets-and-text-files#text
@@ -158,7 +161,7 @@ func Quiz(decodedBytes []byte) string {
 
 func outputStorylineText(questions []Question) {
 	// Create a new file to write the questions to
-	file, err := os.Create(strings.Split(docxFile, ".")[0] + ".txt")
+	file, err := os.Create(strings.Split(outputFile, ".")[0] + ".txt")
 	e(err)
 	defer file.Close()
 
@@ -221,7 +224,7 @@ func outputJSON(structure []Question) {
 	jsonData, err := json.Marshal(structure)
 	e(err)
 
-	jsonFile, err := os.Create(strings.Split(docxFile, ".")[0] + ".json")
+	jsonFile, err := os.Create(strings.Split(outputFile, ".")[0] + ".json")
 	e(err)
 
 	_, err = jsonFile.Write(jsonData)
