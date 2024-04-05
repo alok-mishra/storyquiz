@@ -2,16 +2,17 @@ package storyquiz
 
 import (
 	"bytes"
+	"fmt"
+	"strings"
 
 	"github.com/xuri/excelize/v2"
 )
 
-func ProcessExcel(decodedBytes []byte) []Question {
-	// Open the Excel file
-
-	var questions []Question
-
+func ProcessExcel(decodedBytes []byte) {
 	println("Processing Excel file")
+
+	// Clear the questions slice
+	questions = questions[:0]
 
 	f, err := excelize.OpenReader(bytes.NewReader(decodedBytes))
 	e(err)
@@ -43,7 +44,7 @@ func ProcessExcel(decodedBytes []byte) []Question {
 			question := Question{
 				LearningObjective: "",
 				QuestionNumber:    questionNumber,
-				QuestionText:      row[1],
+				QuestionText:      strings.Split(row[1], "\n")[0],
 			}
 
 			answer := Option{
@@ -73,6 +74,5 @@ func ProcessExcel(decodedBytes []byte) []Question {
 		}
 	}
 
-	return questions
-
+	fmt.Println(len(questions), "Questions extracted from Excel!")
 }
