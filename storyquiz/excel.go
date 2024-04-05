@@ -2,6 +2,7 @@ package storyquiz
 
 import (
 	"bytes"
+	"strings"
 
 	"github.com/xuri/excelize/v2"
 )
@@ -43,7 +44,7 @@ func ProcessExcel(decodedBytes []byte) []Question {
 			question := Question{
 				LearningObjective: "",
 				QuestionNumber:    questionNumber,
-				QuestionText:      row[1],
+				QuestionText:      strings.Split(row[1], "\n")[0],
 			}
 
 			answer := Option{

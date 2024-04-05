@@ -56,11 +56,14 @@ func e(err error) {
 
 func Quiz(decodedBytes []byte, fileName string, fileType string) string {
 
+	outputFile = fileName
+
 	// isWord := fileType == "doc" || fileType == "docx"
 	isExcel := fileType == "xlsx" || fileType == "xls" || fileType == "xlsm"
 
 	if isExcel {
 		questions = ProcessExcel(decodedBytes)
+		outputStorylineText(questions)
 		return fileName + " exported!"
 	}
 

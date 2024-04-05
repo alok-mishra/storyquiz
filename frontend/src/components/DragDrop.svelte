@@ -3,8 +3,6 @@
         onDrop: (file: File, resultText: string) => void,
         dropColor: string = 'bg-stone-400';
 
-    console.log(fileTypes);
-
     const fileTypeMap = {
         // file type map of allowed file types
         csv: 'text/csv',
@@ -19,9 +17,9 @@
         (event.target as HTMLElement).classList.remove(dropColor);
         const file = event.dataTransfer.files[0];
 
-        console.log('filetype:', file);
+        console.log('file', file);
 
-        const fileType = file.type || file.name.split('.').pop();
+        const fileType = file.name.split('.').pop();
 
         console.log('filetype:', fileType);
 
@@ -33,7 +31,7 @@
         if (fileTypes.includes(fileType)) {
             onDrop(file, `Exporting: ${file.name}`);
         } else {
-            onDrop(null, `🤨 Seriously?! Only ${fileTypes.join(' or ')} files are allowed!`);
+            onDrop(null, `<span class='text-4xl'>🤨</span> Seriously?! Please only use ${fileTypes.join(', ')} files!`);
         }
     }
 </script>

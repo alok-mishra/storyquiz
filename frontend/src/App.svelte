@@ -20,7 +20,6 @@
         message = resultText;
 
         if (file) {
-            console.log('reading file...', file);
             fileName = file.name;
             const fileType = fileName.split('.').pop(); // file extension
 
@@ -44,9 +43,9 @@
         <img class="w-40 p-4 absolute -bottom-0 -left-20" alt="Storyline Logo" src={storyline} />
         <img class="w-40 p-4 absolute -bottom-0 -right-20" alt="CSOD Logo" src={csod} />
     </section>
-    <div id="message" class="">{message}</div>
+    <div id="message">{@html message}</div>
     <section class="dragdrop flex">
-        <DragDrop dropColor={'bg-storyline'} fileTypes={['docx', 'xlsm']} {onDrop}>
+        <DragDrop dropColor={'bg-storyline'} fileTypes={['doc', 'docx', 'xls', 'xslx', 'xlsm']} {onDrop}>
             Drop a Word or Excel file here for Storyline Quiz
         </DragDrop>
         <DragDrop dropColor={'bg-csod'} fileTypes={['xls', 'xlsx', 'xlsm']} {onDrop}>
