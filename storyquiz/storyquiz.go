@@ -56,18 +56,13 @@ func e(err error) {
 
 func Quiz(decodedBytes []byte, fileName string, fileType string) string {
 
-	// // Open the .docx file
-	// docx, err := os.Open(docxFile)
-	// e(err)
-	// defer docx.Close()
+	// isWord := fileType == "doc" || fileType == "docx"
+	isExcel := fileType == "xlsx" || fileType == "xls" || fileType == "xlsm"
 
-	// // Get information about the .docx file
-	// docxInfo, err := docx.Stat()
-	// e(err)
-
-	// // Read the document.xml file from the .docx file
-	// r, err := zip.NewReader(docx, docxInfo.Size())
-	// e(err)
+	if isExcel {
+		questions = ProcessExcel(decodedBytes)
+		return fileName + " exported!"
+	}
 
 	if _, err := os.Stat("data/"); os.IsNotExist(err) {
 		outputFile = "document" //TODO: get the file name from the stream

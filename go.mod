@@ -4,7 +4,10 @@ go 1.21
 
 toolchain go1.22.1
 
-require github.com/wailsapp/wails/v2 v2.8.0
+require (
+	github.com/wailsapp/wails/v2 v2.8.0
+	github.com/xuri/excelize/v2 v2.8.1
+)
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect
@@ -33,7 +36,6 @@ require (
 	github.com/wailsapp/go-webview2 v1.0.10 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	github.com/xuri/efp v0.0.0-20231025114914-d1ff6096ae53 // indirect
-	github.com/xuri/excelize/v2 v2.8.1 // indirect
 	github.com/xuri/nfp v0.0.0-20230919160717-d98342af3f05 // indirect
 	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/exp v0.0.0-20240325151524-a685a6edb6d8 // indirect
