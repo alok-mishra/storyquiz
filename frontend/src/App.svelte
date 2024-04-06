@@ -13,6 +13,12 @@
 
     import DragDrop from './components/DragDrop.svelte';
 
+    import { Progress } from '$lib/components/ui/progress';
+    import { Switch } from '$lib/components/ui/switch';
+
+    import { onMount } from 'svelte';
+    let value = 66;
+
     let message: string = '👇 Please drop your file here 👇';
     let fileName: string;
 
@@ -35,7 +41,7 @@
     }
 </script>
 
-<main class="flex flex-col items-center">
+<main class="flex flex-col items-center overflow-auto">
     <!-- <img id="logo" class="w-40 p-4" alt="StoryQuiz Logo" src={logo} /> -->
     <h1 class="text-xl font-black m-4">Quiz Exporter</h1>
     <section class="relative">
@@ -43,6 +49,7 @@
         <img class="w-40 p-4 absolute -bottom-0 -left-20" alt="Storyline Logo" src={storyline} />
         <img class="w-40 p-4 absolute -bottom-0 -right-20" alt="CSOD Logo" src={csod} />
     </section>
+    <Switch class="bg-orange-400" />
     <div id="message">{@html message}</div>
     <section class="dragdrop flex">
         <DragDrop dropColor={'bg-storyline'} fileTypes={['doc', 'docx', 'xls', 'xslx', 'xlsm']} {onDrop}>
@@ -52,4 +59,7 @@
             Drop a Excel file here for CSOD Quiz
         </DragDrop>
     </section>
+    <footer class="w-full p-4">
+        <Progress {value} max={100} class="max-w-60 mx-auto " />
+    </footer>
 </main>
