@@ -1,7 +1,7 @@
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
 /** @type {import('tailwindcss').Config} */
-const config = {
+export default {
     darkMode: ['class'],
     content: ['./src/**/*.{html,js,svelte,ts}'],
     safelist: ['dark'],
@@ -15,6 +15,8 @@ const config = {
         },
         extend: {
             colors: {
+                storyline: '#c560b3',
+                csod: '#fa4616',
                 border: 'hsl(var(--border) / <alpha-value>)',
                 input: 'hsl(var(--input) / <alpha-value>)',
                 ring: 'hsl(var(--ring) / <alpha-value>)',
@@ -59,6 +61,5 @@ const config = {
             },
         },
     },
+    plugins: [],
 };
-
-export default config;
