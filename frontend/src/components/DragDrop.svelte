@@ -71,15 +71,15 @@
     <AlertDialog.Root bind:open={showPremiumDialog}>
         <AlertDialog.Content>
             <AlertDialog.Header>
-                <AlertDialog.Title>Premium Feature</AlertDialog.Title>
-                <AlertDialog.Description>
-                    <p>This feature is only available in the premium version of StoryQuiz.</p>
-                    <br />
-                    <p>Please upgrade to use this functionality.</p>
+                <AlertDialog.Title class="text-4xl font-bold">
+                    You discovered a <span class="text-orange-400 font-black">Premium</span> feature!
+                </AlertDialog.Title>
+                <AlertDialog.Description class="text-xl">
+                    With StoryQuiz Premium you can enjoy even more quiz exporting fun!
                 </AlertDialog.Description>
             </AlertDialog.Header>
             <AlertDialog.Footer>
-                <AlertDialog.Action>Dismiss</AlertDialog.Action>
+                <AlertDialog.Action>Awesome</AlertDialog.Action>
             </AlertDialog.Footer>
         </AlertDialog.Content>
     </AlertDialog.Root>
