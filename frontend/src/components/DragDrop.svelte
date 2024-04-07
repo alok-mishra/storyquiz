@@ -1,7 +1,13 @@
 <script lang="ts">
+    import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
+    import { Button } from '$lib/components/ui/button/index.js';
     export let fileTypes: string[] = [],
         onDrop: (file: File, resultText: string) => void,
         dropColor: string = 'bg-stone-400';
+
+    export let disabled: boolean = false;
+
+    let showPremiumDialog = false;
 
     const fileTypeMap = {
         // file type map of allowed file types
@@ -15,9 +21,17 @@
     function handleDrop(event: DragEvent): void {
         event.preventDefault();
         (event.target as HTMLElement).classList.remove(dropColor);
+
+        if (disabled) {
+            showPremiumDialog = true;
+            return;
+        }
+
         const file = event.dataTransfer.files[0];
 
         console.log('file', file);
+
+        console.log('disabled:', disabled);
 
         const fileType = file.name.split('.').pop();
 
@@ -28,10 +42,10 @@
         // console.log('allowed:', allowedTypes);
 
         // if (allowedTypes.includes(file.type) || allowedTypes.includes(fileType)) {
-        if (fileTypes.includes(fileType)) {
+        if (fileTypes.includes(fileType as string)) {
             onDrop(file, `Exporting: ${file.name}`);
         } else {
-            onDrop(null, `<span class='text-4xl'>🤨</span> Seriously?! Please only use ${fileTypes.join(', ')} files!`);
+            onDrop(null, `<span class='text-4xl'>😕</span> Seriously?! Please only use ${fileTypes.join(', ')} files!`);
         }
     }
 </script>
@@ -53,4 +67,20 @@
     }}
 >
     <slot>Drag & Drop a file here</slot>
+
+    <AlertDialog.Root bind:open={showPremiumDialog}>
+        <AlertDialog.Content>
+            <AlertDialog.Header>
+                <AlertDialog.Title>Premium Feature</AlertDialog.Title>
+                <AlertDialog.Description>
+                    <p>This feature is only available in the premium version of StoryQuiz.</p>
+                    <br />
+                    <p>Please upgrade to use this functionality.</p>
+                </AlertDialog.Description>
+            </AlertDialog.Header>
+            <AlertDialog.Footer>
+                <AlertDialog.Action>Dismiss</AlertDialog.Action>
+            </AlertDialog.Footer>
+        </AlertDialog.Content>
+    </AlertDialog.Root>
 </article>
