@@ -27,26 +27,22 @@
             return;
         }
 
-        const file = event.dataTransfer.files[0];
+        const files = event.dataTransfer.files;
+        console.log('files:', files);
 
-        console.log('file', file);
+        Object.keys(files).forEach((key) => {
+            const file = files[key];
+            const fileType = file.name.split('.').pop();
 
-        console.log('disabled:', disabled);
-
-        const fileType = file.name.split('.').pop();
-
-        console.log('filetype:', fileType);
-
-        // const allowedTypes = fileTypes.map((type) => fileTypeMap[type] || type);
-
-        // console.log('allowed:', allowedTypes);
-
-        // if (allowedTypes.includes(file.type) || allowedTypes.includes(fileType)) {
-        if (fileTypes.includes(fileType as string)) {
-            onDrop(file, `Exporting: ${file.name}`);
-        } else {
-            onDrop(null, `<span class='text-4xl'>😕</span> Seriously?! Please only use ${fileTypes.join(', ')} files!`);
-        }
+            if (fileTypes.includes(fileType as string)) {
+                onDrop(file, `Exporting: ${file.name}`);
+            } else {
+                onDrop(
+                    null,
+                    `<span class='text-4xl'>😕</span> Seriously?! Please only use ${fileTypes.join(', ')} files!`
+                );
+            }
+        });
     }
 </script>
 
