@@ -1,6 +1,5 @@
 <script lang="ts">
     import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
-    import { Button } from '$lib/components/ui/button/index.js';
     export let fileTypes: string[] = [],
         onDrop: (file: File, resultText: string) => void,
         dropColor: string = 'bg-stone-400';
@@ -39,7 +38,7 @@
             } else {
                 onDrop(
                     null,
-                    `<span class='text-4xl'>😕</span> Seriously?! Please only use ${fileTypes.join(', ')} files!`
+                    `<span class='text-4xl'>😧</span> Seriously? Please only use ${fileTypes.join(', ')} files!`
                 );
             }
         });
@@ -75,7 +74,7 @@
                 </AlertDialog.Description>
             </AlertDialog.Header>
             <AlertDialog.Footer>
-                <AlertDialog.Action>Awesome</AlertDialog.Action>
+                <AlertDialog.Action class="font-bold">Awesome</AlertDialog.Action>
             </AlertDialog.Footer>
         </AlertDialog.Content>
     </AlertDialog.Root>
