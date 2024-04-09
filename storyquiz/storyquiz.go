@@ -3,7 +3,6 @@ package storyquiz
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	"strings"
 )
@@ -29,7 +28,8 @@ var questions []Question
 
 func e(err error) {
 	if err != nil {
-		log.Fatal(err)
+		// log.Fatal(err) // I need to see the error message
+		fmt.Println(err)
 	}
 }
 

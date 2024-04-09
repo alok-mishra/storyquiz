@@ -59,6 +59,9 @@ export default {
             fontFamily: {
                 sans: [...fontFamily.sans],
             },
+            screens: {
+                xs: '475px',
+            },
         },
     },
     plugins: [],

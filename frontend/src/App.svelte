@@ -16,7 +16,7 @@
     let progress = 0;
 
     let message: string =
-        '<span class="text-2xl">👇</span> Please drop your file here <span class="text-2xl">👇</span>';
+        '<span class="text-2xl">👇</span> Please drop your files here <span class="text-2xl">👇</span>';
     let fileName: string;
 
     async function onDrop(files: FileList | null, resultText: string): Promise<void> {
@@ -76,12 +76,12 @@
     <Header />
     <Switch class="invisible" />
     <div id="message">{@html message}</div>
-    <section class="dragdrop flex">
+    <section class="dragdrop flex justify-center flex-wrap">
         <DragDrop dropColor={'bg-storyline'} fileTypes={['docx', 'xslx', 'xlsm']} {onDrop}>
             Drop a Word or Excel file here for Storyline Quiz
         </DragDrop>
         <DragDrop dropColor={'bg-csod'} fileTypes={['xlsx', 'xlsm']} {onDrop} disabled>
-            Drop a Excel file here for CSOD Quiz
+            Drop a Excel file here for Cornerstone LMS Quiz
         </DragDrop>
     </section>
     <footer class="w-full p-4">
