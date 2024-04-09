@@ -22,8 +22,23 @@ func ProcessExcel(decodedBytes []byte) {
 
 	// read the fourth sheet named "Module 1"
 	rows, err := f.GetRows("Module 1")
-	e(err)
+	if err != nil {
+		// sheet must be named with roles
+		rows, err = f.GetRows(f.GetSheetName(3))
+		e(err)
+		fmt.Println("Sheet:", f.GetSheetName(3))
+		extractQuestionRows(rows)
+	}
 
+	if len(rows) == 0 {
+		fmt.Println("No rows found in the Excel file")
+		return
+	}
+
+	fmt.Println(len(questions), "Questions extracted from Excel!")
+}
+
+func extractQuestionRows(rows [][]string) {
 	// first row contains the headers
 	// row[1] contains the question text, and row[2] contains the answer
 	// while row[1] is empty, row[2] contains the distractors
@@ -74,5 +89,4 @@ func ProcessExcel(decodedBytes []byte) {
 		}
 	}
 
-	fmt.Println(len(questions), "Questions extracted from Excel!")
 }
