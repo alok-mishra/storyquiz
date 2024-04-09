@@ -20,37 +20,58 @@
 
     let progress = 0;
 
-    let message: string = '👇 Please drop your file here 👇';
+    let message: string =
+        '<span class="text-2xl">👇</span> Please drop your file here <span class="text-2xl">👇</span>';
     let fileName: string;
 
-    function onDrop(file: File | null, resultText: string): void {
+    async function onDrop(files: FileList | null, resultText: string): Promise<void> {
         message = resultText;
 
-        if (file) {
+        let fileIndex = 0;
+
+        if (files && files.length > 0) {
             const progressInterval = setInterval(() => {
                 progress++;
                 console.log('progress:', progress);
                 if (progress >= 100) {
                     setTimeout(() => {
-                        progress = 0;
                         clearInterval(progressInterval);
-                    }, 600);
+                        progress = 0;
+                    }, 200);
                 }
-            }, 10);
+            }, 20);
 
-            fileName = file.name;
-            const fileType = fileName.split('.').pop() as string; // file extension
+            for (const file of files) {
+                fileName = file.name;
 
-            const reader = new FileReader();
-            reader.onload = async () => {
-                const fileContents = reader.result as string;
-                await Quiz(btoa(fileContents), fileName, fileType).then((result) => {
-                    progress = 100;
-                    message = result;
-                });
-            };
-            reader.readAsBinaryString(file);
+                const fileType = fileName.split('.').pop() as string; // file extension
+
+                console.log('fileType:', fileType);
+
+                const fileContents = await readFileAsBase64(file);
+                message = await Quiz(fileContents, fileName, fileType);
+
+                fileIndex = [...files].indexOf(file);
+                progress = ((fileIndex + 1) / files.length) * 100;
+            }
+
+            if (files.length > 1) {
+                message = `<span class="text-2xl">🎉</span> ${files.length} files exported! <span class="text-2xl">🚀</span>`;
+            }
         }
+    }
+
+    async function readFileAsBase64(file: File): Promise<string> {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                resolve(btoa(reader.result as string));
+            };
+
+            reader.onerror = reject;
+            reader.readAsBinaryString(file);
+        });
     }
 </script>
 
@@ -116,13 +137,13 @@
         <img class="w-40 p-4 absolute -bottom-0 -left-20" alt="Storyline Logo" src={storyline} />
         <img class="w-40 p-4 absolute -bottom-0 -right-20" alt="CSOD Logo" src={csod} />
     </section>
-    <Switch class="bg-orange-400" />
+    <Switch class="invisible" />
     <div id="message">{@html message}</div>
     <section class="dragdrop flex">
-        <DragDrop dropColor={'bg-storyline'} fileTypes={['doc', 'docx', 'xls', 'xslx', 'xlsm']} {onDrop}>
+        <DragDrop dropColor={'bg-storyline'} fileTypes={['docx', 'xslx', 'xlsm']} {onDrop}>
             Drop a Word or Excel file here for Storyline Quiz
         </DragDrop>
-        <DragDrop dropColor={'bg-csod'} fileTypes={['xls', 'xlsx', 'xlsm']} {onDrop} disabled>
+        <DragDrop dropColor={'bg-csod'} fileTypes={['xlsx', 'xlsm']} {onDrop} disabled>
             Drop a Excel file here for CSOD Quiz
         </DragDrop>
     </section>

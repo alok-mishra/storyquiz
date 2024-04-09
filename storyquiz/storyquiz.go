@@ -44,13 +44,13 @@ func Quiz(decodedBytes []byte, fileName string, fileType string) string {
 	if isExcel {
 		ProcessExcel(decodedBytes)
 		outputStorylineText(questions)
-		return fileName + " exported!"
+		return "<span class='text-cyan-400'>" + fileName + "</span> exported!"
 	}
 
 	if isWord {
 		ProcessWord(decodedBytes)
 		outputStorylineText(questions)
-		return fileName + " exported!"
+		return "<span class='text-cyan-400'>" + fileName + "</span> exported!"
 	}
 
 	if _, err := os.Stat("data/"); os.IsNotExist(err) {
