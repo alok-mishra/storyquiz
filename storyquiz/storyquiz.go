@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 	"strings"
 )
 
@@ -78,6 +77,11 @@ func Quiz(decodedBytes []byte, fileName string, fileType string) string {
 	return "Quiz exported!"
 }
 
+func replaceSmarts(text string) string {
+	replacer := strings.NewReplacer("’", "'", "“", "\"", "”", "\"")
+	return replacer.Replace(text)
+}
+
 func outputStorylineText(questions []Question) {
 	// Create a new file to write the questions to
 	file, err := os.Create(strings.Split(outputFile, ".")[0] + ".txt")
@@ -90,41 +94,30 @@ func outputStorylineText(questions []Question) {
 		_, err = file.WriteString("MC\n")
 		e(err)
 
-		// Write the question number
-		_, err = file.WriteString(strconv.Itoa(question.QuestionNumber) + "\n")
+		// Write the question points value
+		// _, err = file.WriteString(strconv.Itoa(question.QuestionNumber) + "\n") // Question number is not used
+		_, err = file.WriteString("1\n")
 		e(err)
 
 		// Write the question text
-		_, err = file.WriteString(question.QuestionText + "\n")
+		_, err = file.WriteString(replaceSmarts(question.QuestionText) + "\n")
+
 		e(err)
 
 		// Write the options
 		for _, option := range question.Options {
-			// Write the option text
-
 			textPrefix := ""
-			feedback := option.Feedback
-
-			if feedback == "" {
-				feedback = "That is incorrect."
-			}
+			feedback := ""
 
 			if option.IsAnswer {
 				textPrefix = "*"
-				feedback = "That's correct!"
 			}
 
-			optionText := option.Text + " | " + feedback
-
-			_, _ = file.WriteString(textPrefix + optionText)
-
-			// Write the feedback if available
 			if option.Feedback != "" {
-				_, _ = file.WriteString(option.Feedback)
+				feedback = " | " + option.Feedback
 			}
 
-			// Write a new line
-			_, _ = file.WriteString("\n")
+			_, _ = file.WriteString(textPrefix + replaceSmarts(option.Text) + feedback + "\n")
 		}
 
 		// Write a new line

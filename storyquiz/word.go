@@ -151,7 +151,7 @@ func extractQuestions(table Table) {
 			option := Option{
 				Text:     correctAnswer,
 				IsAnswer: true,
-				// Set Feedback later if available
+				Feedback: "", // Set Feedback later if available
 			}
 
 			// Append the option to the options slice
@@ -170,7 +170,7 @@ func extractQuestions(table Table) {
 			option := Option{
 				Text:     optionText,
 				IsAnswer: false,
-				// Set Feedback later if available
+				Feedback: "", // Set Feedback later if available
 			}
 
 			// Append the option to the options slice
