@@ -16,7 +16,7 @@
     let progress = 0;
 
     let message: string =
-        '<span class="text-2xl">👇</span> Please drop your files here <span class="text-2xl">👇</span>';
+        '<span class="text-2xl hidden xs:inline">👇</span> Please drop your files here <span class="text-2xl">👇</span>';
     let fileName: string;
 
     async function onDrop(files: FileList | null, resultText: string): Promise<void> {
@@ -74,9 +74,9 @@
     <h1 class="text-4xl font-black mt-4 text-orange-600">StoryQuiz</h1>
     <h2 class="text-sm">(Quiz Exporter)</h2>
     <Header />
-    <Switch class="invisible" />
-    <div id="message">{@html message}</div>
-    <section class="dragdrop flex justify-center flex-wrap">
+    <Switch class="hidden" />
+    <div id="message" class="xs:leading-10">{@html message}</div>
+    <section class="dragdrop flex justify-center flex-wrap gap-4 mt-2 xs:mt-0">
         <DragDrop dropColor={'bg-storyline'} fileTypes={['docx', 'xslx', 'xlsm']} {onDrop}>
             Drop a Word or Excel file here for Storyline Quiz
         </DragDrop>

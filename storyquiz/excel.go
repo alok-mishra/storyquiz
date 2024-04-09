@@ -20,15 +20,15 @@ func ProcessExcel(decodedBytes []byte) {
 	// get all sheets in the excel file
 	// sheets := f.GetSheetList()
 
-	// read the fourth sheet named "Module 1"
-	rows, err := f.GetRows("Module 1")
+	rows, err := f.GetRows("Module 1") // read the fourth sheet named "Module 1"
 	if err != nil {
 		// sheet must be named with roles
 		rows, err = f.GetRows(f.GetSheetName(3))
 		e(err)
 		fmt.Println("Sheet:", f.GetSheetName(3))
-		extractQuestionRows(rows)
 	}
+
+	extractQuestionRows(rows)
 
 	if len(rows) == 0 {
 		fmt.Println("No rows found in the Excel file")

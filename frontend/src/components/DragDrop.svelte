@@ -54,7 +54,7 @@
 
 <article
     id="drop"
-    class="border-2 border-dotted p-6 m-4 rounded-lg bg-opacity-60 max-w-60"
+    class="border-2 border-dotted p-4 rounded-lg bg-opacity-60 max-w-60"
     on:drop={handleDrop}
     on:dragover={(e) => e.preventDefault()}
     on:dragenter={(e) => {
