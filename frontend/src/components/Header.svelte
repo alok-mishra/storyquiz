@@ -8,6 +8,9 @@
 
     let showLicense = false;
     let showInfo = false;
+
+    const copyright = import.meta.env.VITE_COPYRIGHT || 'Copyright 2024 Alok Mishra';
+    const email = import.meta.env.VITE_EMAIL || 'alok@alokmishra.com';
 </script>
 
 <section class="relative">
@@ -15,15 +18,17 @@
         <Popover.Trigger>
             <img class="w-40 xs:w-60 p-4" alt="StoryQuiz Logo" src={storyquiz} />
         </Popover.Trigger>
-        <Popover.Content class="w-60 !top-12">
+        <Popover.Content class="w-80 !top-12">
             <div class="flex justify-center items-center">
                 <div>
                     <img class="w-20 p-4" alt="StoryQuiz Logo" src={storyquiz} />
                 </div>
                 <div>
                     <p class="text-lg font-bold text-orange-600">Story Quiz</p>
-                    <h4 class="text-sm font-semibold text-cyan-200">@alok.mishra</h4>
-                    <span class="text-xs text-muted-foreground">v1.0, April 2024</span>
+                    <h4 class="text-sm font-semibold text-cyan-200">
+                        <a href={`mailto:${email}`}>{email}</a>
+                    </h4>
+                    <h6 class="text-xs text-muted-foreground">v1.0, April 2024</h6>
                     <button
                         class="text-sm text-cyan-600 hover:text-cyan-400"
                         on:click={() => {
@@ -47,7 +52,7 @@
             <Drawer.Title class="border-b border-solid mb-4 pb-2">MIT License</Drawer.Title>
             <Drawer.Description>
                 <section class="flex flex-col gap-4">
-                    <p>Copyright 2024 Alok Mishra</p>
+                    <p>{copyright}</p>
                     <p>
                         Permission is hereby granted, free of charge, to any person obtaining a copy of this software
                         and associated documentation files (the “Software”), to deal in the Software without
