@@ -18,8 +18,8 @@
         <Popover.Trigger>
             <img class="w-40 xs:w-60 p-4" alt="StoryQuiz Logo" src={storyquiz} />
         </Popover.Trigger>
-        <Popover.Content class="w-80 !top-12">
-            <div class="flex justify-center items-center">
+        <Popover.Content class="w-56 xs:w-80 !top-12">
+            <div class="flex justify-center items-center flex-col xs:flex-row">
                 <div>
                     <img class="w-20 p-4" alt="StoryQuiz Logo" src={storyquiz} />
                 </div>
