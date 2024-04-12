@@ -30,7 +30,7 @@
         const files = event.dataTransfer?.files;
 
         if (!files || files.length === 0) {
-            onDrop(null, 'No files dropped!');
+            onDrop(null, 'No files dropped!', exportType);
             return;
         }
 

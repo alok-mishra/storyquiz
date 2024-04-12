@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-var exportFile string
+var exportName string
 
 // Define structs to represent questions and options
 type Question struct {
@@ -35,32 +35,31 @@ func e(err error) {
 
 func Quiz(decodedBytes []byte, fileName string, fileType string, outputType string) string {
 
-	exportFile = fileName
+	exportName = strings.Split(fileName, ".")[0]
 
 	isWord := fileType == "doc" || fileType == "docx"
 	isExcel := fileType == "xls" || fileType == "xlsx" || fileType == "xlsm"
 
 	if isExcel {
 		ProcessExcel(decodedBytes)
-		outputStorylineText(questions)
-		return "<span class='text-cyan-400'>" + fileName + "</span> exported!"
-	}
-
-	if isWord {
+	} else if isWord {
 		ProcessWord(decodedBytes)
-		outputStorylineText(questions)
-		return "<span class='text-cyan-400'>" + fileName + "</span> exported!"
 	}
 
-	if _, err := os.Stat("data/"); os.IsNotExist(err) {
-		exportFile = "document" //TODO: get the file name from the stream
+	if outputType == "cornerstone" {
+		exportCornerstone(questions)
+	} else if outputType == "storyline" {
+		exportStoryline(questions)
 	} else {
-		exportFile = "data/document"
+		if _, err := os.Stat("data/"); os.IsNotExist(err) {
+			exportName = "document" //TODO: get the file name from the stream
+		} else {
+			exportName = "data/document"
+		}
+		outputJSON(questions)
 	}
 
-	outputJSON(questions)
-
-	return "Quiz exported!"
+	return "<span class='text-cyan-400'>" + fileName + "</span> exported!"
 }
 
 func outputJSON(structure []Question) {
@@ -70,7 +69,7 @@ func outputJSON(structure []Question) {
 	jsonData, err := json.Marshal(structure)
 	e(err)
 
-	jsonFile, err := os.Create(strings.Split(exportFile, ".")[0] + ".json")
+	jsonFile, err := os.Create(exportName + ".json")
 	e(err)
 
 	_, err = jsonFile.Write(jsonData)

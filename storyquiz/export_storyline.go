@@ -23,9 +23,9 @@ func replaceSmarts(text string) string {
 	return replacer.Replace(text)
 }
 
-func outputStorylineText(questions []Question) {
+func exportStoryline(questions []Question) {
 	// Create a new file to write the questions to
-	file, err := os.Create(strings.Split(exportFile, ".")[0] + ".txt")
+	file, err := os.Create("Storyline - " + exportName + ".txt")
 	e(err)
 	defer file.Close()
 
@@ -65,5 +65,5 @@ func outputStorylineText(questions []Question) {
 		_, _ = file.WriteString("\n")
 	}
 
-	fmt.Print("Output Storyline text!\n\n")
+	fmt.Print("Exported Storyline text!\n\n")
 }

@@ -80,7 +80,7 @@
         <DragDrop fileTypes={['docx', 'xslx', 'xlsm']} dropColor={'bg-storyline'} {onDrop}>
             Drop a Word or Excel file here for Storyline Quiz
         </DragDrop>
-        <DragDrop fileTypes={['docx', 'xlsx', 'xlsm']} dropColor={'bg-csod'} exportType={'csod'} {onDrop}>
+        <DragDrop fileTypes={['docx', 'xlsx', 'xlsm']} dropColor={'bg-csod'} exportType={'cornerstone'} {onDrop}>
             Drop a Word or Excel file here for Cornerstone Quiz
         </DragDrop>
     </section>
