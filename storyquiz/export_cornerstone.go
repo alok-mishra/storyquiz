@@ -30,12 +30,30 @@ func exportCornerstone(questions []Question) {
 		f.SetCellValue(sheetName, fmt.Sprintf("%c%d", 'A'+i, 1), v)
 	}
 
+	// for each question, write to the sheet
+	for i, question := range questions {
+		f.SetCellValue(sheetName, fmt.Sprintf("A%d", i+2), "")
+		f.SetCellValue(sheetName, fmt.Sprintf("B%d", i+2), question.QuestionText)
+		f.SetCellValue(sheetName, fmt.Sprintf("C%d", i+2), "Multiple Choice / Single Answer")
+		f.SetCellValue(sheetName, fmt.Sprintf("D%d", i+2), 1)
+		f.SetCellValue(sheetName, fmt.Sprintf("E%d", i+2), "")
+		f.SetCellValue(sheetName, fmt.Sprintf("F%d", i+2), "en-US")
+		f.SetCellValue(sheetName, fmt.Sprintf("G%d", i+2), 1)
+		f.SetCellValue(sheetName, fmt.Sprintf("H%d", i+2), 1)
+		f.SetCellValue(sheetName, fmt.Sprintf("I%d", i+2), "")
+		f.SetCellValue(sheetName, fmt.Sprintf("J%d", i+2), 4)
+		f.SetCellValue(sheetName, fmt.Sprintf("K%d", i+2), "")
+		f.SetCellValue(sheetName, fmt.Sprintf("L%d", i+2), "")
+		f.SetCellValue(sheetName, fmt.Sprintf("M%d", i+2), question.Options[0].Text)
+		f.SetCellValue(sheetName, fmt.Sprintf("N%d", i+2), question.Options[1].Text)
+		f.SetCellValue(sheetName, fmt.Sprintf("O%d", i+2), question.Options[2].Text)
+		f.SetCellValue(sheetName, fmt.Sprintf("P%d", i+2), question.Options[3].Text)
+	}
+
 	// delete the default sheet
 	f.DeleteSheet("Sheet1")
 
-	// Set active sheet of the workbook.
-
-	err = f.SaveAs("LMS - " + exportName + ".xlsx")
+	err = f.SaveAs(exportName + " (LMS).xlsx")
 	e(err)
 
 	fmt.Print(len(questions), "Exported Cornerstone Excel!\n\n")

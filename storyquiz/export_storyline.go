@@ -25,7 +25,7 @@ func replaceSmarts(text string) string {
 
 func exportStoryline(questions []Question) {
 	// Create a new file to write the questions to
-	file, err := os.Create("Storyline - " + exportName + ".txt")
+	file, err := os.Create(exportName + " (Storyline).txt")
 	e(err)
 	defer file.Close()
 
