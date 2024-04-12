@@ -3,9 +3,9 @@
 
     export let fileTypes: string[] = [],
         dropColor: string = 'bg-stone-400',
-        outputType: string = 'storyline',
+        exportType: string = 'storyline',
         disabled: boolean = false,
-        onDrop: (files: FileList | null, resultText: string, outputType: string) => void;
+        onDrop: (files: FileList | null, resultText: string, exportType: string) => void;
 
     let showPremiumDialog = false;
 
@@ -41,7 +41,7 @@
                 onDrop(
                     null,
                     `<span class="text-2xl">😧</span> Seriously? Please only use ${fileTypes.slice(0, -1).join(', ')} and ${fileTypes.slice(-1)} files!`,
-                    outputType
+                    exportType
                 );
                 return;
             }
@@ -50,7 +50,7 @@
         onDrop(
             files,
             `Processing ${files.length > 1 ? files.length + ' files!' : '<span class="text-cyan-400">' + files[0].name + '</span>'}`,
-            outputType
+            exportType
         );
     }
 </script>
