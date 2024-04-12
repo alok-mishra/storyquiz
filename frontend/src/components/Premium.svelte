@@ -18,4 +18,4 @@
             <AlertDialog.Action class="font-bold">Awesome</AlertDialog.Action>
         </AlertDialog.Footer>
     </AlertDialog.Content>
-</AlertDialog.Root>;
+</AlertDialog.Root>

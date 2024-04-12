@@ -19,7 +19,7 @@
         '<span class="text-2xl hidden xs:inline">👇</span> Please drop your files here <span class="text-2xl">👇</span>';
     let fileName: string;
 
-    async function onDrop(files: FileList | null, resultText: string): Promise<void> {
+    async function onDrop(files: FileList | null, resultText: string, outputType: string): Promise<void> {
         message = resultText;
 
         let fileIndex = 0;
@@ -44,7 +44,7 @@
                 console.log('fileType:', fileType);
 
                 const fileContents = await readFileAsBase64(file);
-                message = await Quiz(fileContents, fileName, fileType);
+                message = await Quiz(fileContents, fileName, fileType, outputType);
 
                 fileIndex = [...files].indexOf(file);
                 progress = ((fileIndex + 1) / files.length) * 100;
@@ -77,11 +77,11 @@
     <Switch class="hidden" />
     <div id="message" class="xs:leading-10">{@html message}</div>
     <section class="dragdrop flex justify-center flex-wrap gap-4 mt-2 xs:mt-0">
-        <DragDrop dropColor={'bg-storyline'} fileTypes={['docx', 'xslx', 'xlsm']} {onDrop}>
+        <DragDrop fileTypes={['docx', 'xslx', 'xlsm']} dropColor={'bg-storyline'} {onDrop}>
             Drop a Word or Excel file here for Storyline Quiz
         </DragDrop>
-        <DragDrop dropColor={'bg-csod'} fileTypes={['xlsx', 'xlsm']} {onDrop} disabled>
-            Drop a Excel file here for Cornerstone LMS Quiz
+        <DragDrop fileTypes={['docx', 'xlsx', 'xlsm']} dropColor={'bg-csod'} outputType={'csod'} {onDrop}>
+            Drop a Word or Excel file here for Cornerstone Quiz
         </DragDrop>
     </section>
     <footer class="w-full p-4">

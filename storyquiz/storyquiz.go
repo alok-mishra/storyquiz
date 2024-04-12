@@ -33,7 +33,7 @@ func e(err error) {
 	}
 }
 
-func Quiz(decodedBytes []byte, fileName string, fileType string) string {
+func Quiz(decodedBytes []byte, fileName string, fileType string, outputType string) string {
 
 	outputFile = fileName
 

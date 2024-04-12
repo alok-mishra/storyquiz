@@ -50,7 +50,7 @@ func main() {
 		// Encode the byte slice to base64
 		encodedData := base64.StdEncoding.EncodeToString(docxBytes)
 
-		println(app.Quiz(encodedData, "document.docx", "docx"))
+		println(app.Quiz(encodedData, "document.docx", "docx", "storyline"))
 
 	}
 

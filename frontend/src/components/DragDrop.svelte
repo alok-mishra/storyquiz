@@ -2,10 +2,10 @@
     import ShowPremiumDialog from '$components/Premium.svelte';
 
     export let fileTypes: string[] = [],
-        onDrop: (files: FileList | null, resultText: string) => void,
-        dropColor: string = 'bg-stone-400';
-
-    export let disabled: boolean = false;
+        dropColor: string = 'bg-stone-400',
+        outputType: string = 'storyline',
+        disabled: boolean = false,
+        onDrop: (files: FileList | null, resultText: string, outputType: string) => void;
 
     let showPremiumDialog = false;
 
@@ -40,7 +40,8 @@
             if (!fileTypes.includes(fileType)) {
                 onDrop(
                     null,
-                    `<span class="text-2xl">😧</span> Seriously? Please only use ${fileTypes.slice(0, -1).join(', ')} and ${fileTypes.slice(-1)} files!`
+                    `<span class="text-2xl">😧</span> Seriously? Please only use ${fileTypes.slice(0, -1).join(', ')} and ${fileTypes.slice(-1)} files!`,
+                    outputType
                 );
                 return;
             }
@@ -48,7 +49,8 @@
 
         onDrop(
             files,
-            `Processing ${files.length > 1 ? files.length + ' files!' : '<span class="text-cyan-400">' + files[0].name + '</span>'}`
+            `Processing ${files.length > 1 ? files.length + ' files!' : '<span class="text-cyan-400">' + files[0].name + '</span>'}`,
+            outputType
         );
     }
 </script>
