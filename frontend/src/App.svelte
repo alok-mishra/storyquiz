@@ -7,8 +7,8 @@
 
     import { Quiz } from '../wailsjs/go/main/App.js';
 
-    import Header from './components/Header.svelte';
-    import DragDrop from './components/DragDrop.svelte';
+    import Header from '$components/Header.svelte';
+    import DragDrop from '$components/DragDrop.svelte';
 
     import { Progress } from '$lib/components/ui/progress';
     import { Switch } from '$lib/components/ui/switch';

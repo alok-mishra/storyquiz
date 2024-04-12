@@ -1,5 +1,6 @@
 <script lang="ts">
-    import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
+    import ShowPremiumDialog from '$components/Premium.svelte';
+
     export let fileTypes: string[] = [],
         onDrop: (files: FileList | null, resultText: string) => void,
         dropColor: string = 'bg-stone-400';
@@ -70,19 +71,5 @@
 >
     <slot>Drag & Drop a file here</slot>
 
-    <AlertDialog.Root bind:open={showPremiumDialog}>
-        <AlertDialog.Content>
-            <AlertDialog.Header>
-                <AlertDialog.Title class="text-4xl font-bold">
-                    You discovered a <span class="text-orange-400 font-black">Premium</span> feature!
-                </AlertDialog.Title>
-                <AlertDialog.Description class="text-xl">
-                    With StoryQuiz Premium you can enjoy even more quiz exporting fun!
-                </AlertDialog.Description>
-            </AlertDialog.Header>
-            <AlertDialog.Footer>
-                <AlertDialog.Action class="font-bold">Awesome</AlertDialog.Action>
-            </AlertDialog.Footer>
-        </AlertDialog.Content>
-    </AlertDialog.Root>
+    <ShowPremiumDialog show={showPremiumDialog} />
 </article>

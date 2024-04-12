@@ -8,8 +8,9 @@
         "baseUrl": ".",
         "moduleResolution": "Node",
         "paths": {
-            "$lib": ["./src/lib"],
-            "$lib/*": ["./src/lib/*"]
+            "$lib/*": ["./src/lib/*"],
+            "$assets/*": ["./src/assets/*"],
+            "$components/*": ["./src/components/*"]
         },
 
         /**
