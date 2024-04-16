@@ -59,7 +59,7 @@ func extractQuestionRows(rows [][]string) {
 			question := Question{
 				LearningObjective: "",
 				QuestionNumber:    questionNumber,
-				QuestionText:      strings.Split(row[1], "\n")[0],
+				QuestionText:      strings.ReplaceAll(strings.Split(row[1], "\n\n")[0], "\n", " "),
 			}
 
 			answer := Option{
