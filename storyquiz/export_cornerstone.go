@@ -55,5 +55,5 @@ func exportCornerstone(questions []Question) {
 	err = f.SaveAs(exportName + " (LMS).xlsx")
 	e(err)
 
-	fmt.Print(len(questions), "Exported Cornerstone Excel!\n\n")
+	fmt.Print("Exported Cornerstone Excel!\n\n")
 }

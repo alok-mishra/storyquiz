@@ -44,7 +44,15 @@
                 console.log('fileType:', fileType);
 
                 const fileContents = await readFileAsBase64(file);
-                message = await Quiz(fileContents, fileName, fileType, exportType);
+
+                let quizResult: string;
+                try {
+                    quizResult = await Quiz(fileContents, fileName, fileType, exportType);
+                } catch (error) {
+                    console.error(error);
+                    message = `<span class="text-2xl">💥</span> Error: ${error}`;
+                    return;
+                }
 
                 fileIndex = [...files].indexOf(file);
                 progress = ((fileIndex + 1) / files.length) * 100;

@@ -65,5 +65,5 @@ func exportStoryline(questions []Question) {
 		_, _ = file.WriteString("\n")
 	}
 
-	fmt.Print("Exported Storyline text!\n\n")
+	fmt.Print("Exported Storyline Text!\n\n")
 }
