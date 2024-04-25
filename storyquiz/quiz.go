@@ -2,6 +2,7 @@ package storyquiz
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -33,7 +34,7 @@ func e(err error) {
 	}
 }
 
-func Quiz(decodedBytes []byte, fileName string, fileType string, outputType string) string {
+func Quiz(decodedBytes []byte, fileName string, fileType string, outputType string) (string, error) {
 
 	exportName = strings.Split(fileName, ".")[0]
 
@@ -44,6 +45,10 @@ func Quiz(decodedBytes []byte, fileName string, fileType string, outputType stri
 		ProcessExcel(decodedBytes)
 	} else if isWord {
 		ProcessWord(decodedBytes)
+	}
+
+	if len(questions) == 0 {
+		return "", errors.New("no questions found, do you have the correct file?")
 	}
 
 	if outputType == "cornerstone" {
@@ -59,7 +64,7 @@ func Quiz(decodedBytes []byte, fileName string, fileType string, outputType stri
 		outputJSON(questions)
 	}
 
-	return "<span class='text-cyan-400'>" + fileName + "</span> exported!"
+	return fmt.Sprintf("<span class='text-cyan-400'>%d</span> questions exported from <span class='text-cyan-400'>%s</span>!", len(questions), fileName), nil
 }
 
 func outputJSON(structure []Question) {

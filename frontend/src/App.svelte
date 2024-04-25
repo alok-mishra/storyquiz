@@ -54,6 +54,8 @@
                     return;
                 }
 
+                message = quizResult;
+
                 fileIndex = [...files].indexOf(file);
                 progress = ((fileIndex + 1) / files.length) * 100;
             }
@@ -85,7 +87,7 @@
     <Switch class="hidden" />
     <div id="message" class="xs:leading-10">{@html message}</div>
     <section class="dragdrop flex justify-center flex-wrap gap-4 mt-2 xs:mt-0">
-        <DragDrop fileTypes={['docx', 'xslx', 'xlsm']} dropColor={'bg-storyline'} {onDrop}>
+        <DragDrop fileTypes={['docx', 'xlsx', 'xlsm']} dropColor={'bg-storyline'} {onDrop}>
             Drop a Word or Excel file here for Storyline Quiz
         </DragDrop>
         <DragDrop fileTypes={['docx', 'xlsx', 'xlsm']} dropColor={'bg-csod'} exportType={'cornerstone'} {onDrop}>

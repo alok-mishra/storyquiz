@@ -53,5 +53,5 @@ func (a *App) Quiz(file string, fileName string, fileType string, outputType str
 	if err != nil {
 		return "", err
 	}
-	return storyquiz.Quiz(decoded, fileName, fileType, outputType), nil
+	return storyquiz.Quiz(decoded, fileName, fileType, outputType)
 }
