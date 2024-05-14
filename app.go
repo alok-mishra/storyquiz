@@ -31,6 +31,10 @@ func (a *App) startup(ctx context.Context) {
 func (a *App) shutdown(ctx context.Context) {
 }
 
+func (a *App) BuildTime() string {
+	return buildTime
+}
+
 func (a *App) Quiz(file string, fileName string, fileType string, outputType string) (string, error) {
 
 	// oneMinuteAgo := time.Now().Add(-1 * time.Minute)

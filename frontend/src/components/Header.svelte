@@ -7,11 +7,32 @@
     import { Button } from '$lib/components/ui/button';
     import pkg from '../../package.json';
 
+    import { BuildTime } from '../../wailsjs/go/main/App.js';
+
     let showLicense = false;
     let showInfo = false;
 
     const copyright = import.meta.env.VITE_COPYRIGHT || 'Copyright 2024 Alok Mishra';
     const email = import.meta.env.VITE_EMAIL || 'alok@alokmishra.com';
+
+    let buildDay = 'April 2024';
+
+    (async () => {
+        try {
+            const buildTime = await BuildTime();
+            console.log('buildTime:' + buildTime);
+
+            const date = new Date(buildTime);
+            buildDay = date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    })();
 </script>
 
 <section class="relative">
@@ -29,7 +50,7 @@
                     <h4 class="text-sm font-semibold text-cyan-200">
                         <a href={`mailto:${email}`}>{email}</a>
                     </h4>
-                    <h6 class="text-xs text-muted-foreground">v{pkg.version}, May 2024</h6>
+                    <h6 class="text-xs text-muted-foreground">v{pkg.version}, {buildDay}</h6>
                     <button
                         class="text-sm text-cyan-600 hover:text-cyan-400"
                         on:click={() => {
