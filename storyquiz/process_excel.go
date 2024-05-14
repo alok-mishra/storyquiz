@@ -8,6 +8,8 @@ import (
 	"github.com/xuri/excelize/v2"
 )
 
+var courseCode, courseTitle string
+
 func ProcessExcel(decodedBytes []byte) {
 	println("Processing Excel file")
 
@@ -19,6 +21,14 @@ func ProcessExcel(decodedBytes []byte) {
 
 	// get all sheets in the excel file
 	// sheets := f.GetSheetList()
+
+	courseCode, err = f.GetCellValue("Project Information", "C4")
+	e(err)
+
+	courseTitle, err = f.GetCellValue("Project Information", "C5")
+	e(err)
+
+	fmt.Printf("Course: %s - %s\n", courseCode, courseTitle)
 
 	rows, err := f.GetRows("Module 1") // read the fourth sheet named "Module 1"
 	if err != nil {

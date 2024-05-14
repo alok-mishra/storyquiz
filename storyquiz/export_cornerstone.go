@@ -30,9 +30,11 @@ func exportCornerstone(questions []Question) {
 		f.SetCellValue(sheetName, fmt.Sprintf("%c%d", 'A'+i, 1), v)
 	}
 
+	fmt.Println("Code:", courseCode)
+
 	// for each question, write to the sheet
 	for i, question := range questions {
-		f.SetCellValue(sheetName, fmt.Sprintf("A%d", i+2), i+1)
+		f.SetCellValue(sheetName, fmt.Sprintf("A%d", i+2), strings.TrimSpace(fmt.Sprintf("%s %d", courseCode, question.QuestionNumber)))
 		f.SetCellValue(sheetName, fmt.Sprintf("B%d", i+2), question.QuestionText)
 		f.SetCellValue(sheetName, fmt.Sprintf("C%d", i+2), "Multiple Choice / Single Answer")
 		f.SetCellValue(sheetName, fmt.Sprintf("D%d", i+2), 1)
