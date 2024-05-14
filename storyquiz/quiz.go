@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-var exportName string
+var exportName, courseCode, courseTitle string
 
 // Define structs to represent questions and options
 type Question struct {

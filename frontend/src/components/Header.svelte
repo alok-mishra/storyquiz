@@ -29,7 +29,7 @@
                     <h4 class="text-sm font-semibold text-cyan-200">
                         <a href={`mailto:${email}`}>{email}</a>
                     </h4>
-                    <h6 class="text-xs text-muted-foreground">v{pkg.version}, April 2024</h6>
+                    <h6 class="text-xs text-muted-foreground">v{pkg.version}, May 2024</h6>
                     <button
                         class="text-sm text-cyan-600 hover:text-cyan-400"
                         on:click={() => {

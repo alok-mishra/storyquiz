@@ -8,8 +8,6 @@ import (
 	"github.com/xuri/excelize/v2"
 )
 
-var courseCode, courseTitle string
-
 func ProcessExcel(decodedBytes []byte) {
 	println("Processing Excel file")
 

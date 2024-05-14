@@ -94,6 +94,8 @@ func ProcessWord(decodedBytes []byte) {
 		}
 	}
 
+	courseCode = strings.Join(body.Tables[0].Rows[0].Cells[3].Content, "")
+
 	for _, table := range questionTables {
 		// Extract questions from the table
 		extractQuestions(table)
