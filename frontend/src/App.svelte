@@ -81,8 +81,6 @@
 </script>
 
 <main class="flex flex-col items-center overflow-auto">
-    <h1 class="text-4xl font-black mt-4 text-orange-600">StoryQuiz</h1>
-    <h2 class="text-sm">(Quiz Exporter)</h2>
     <Header />
     <Switch class="hidden" />
     <div id="message" class="xs:leading-10">{@html message}</div>

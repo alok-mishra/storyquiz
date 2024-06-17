@@ -27,7 +27,7 @@
                 weekday: 'long',
                 year: 'numeric',
                 month: 'long',
-                day: 'numeric'
+                day: 'numeric',
             });
         } catch (error) {
             console.error(error);
@@ -35,7 +35,9 @@
     })();
 </script>
 
-<section class="relative">
+<header class="relative">
+    <h1 class="text-4xl font-black mt-4 text-orange-600">StoryQuiz</h1>
+    <h2 class="text-sm">(Quiz Exporter - v{pkg.version})</h2>
     <Popover.Root bind:open={showInfo}>
         <Popover.Trigger>
             <img class="w-40 xs:w-60 p-4" alt="StoryQuiz Logo" src={storyquiz} />
@@ -66,7 +68,7 @@
     </Popover.Root>
     <img class="w-40 p-4 absolute -bottom-0 -left-20 hidden xs:block" alt="Storyline Logo" src={storyline} />
     <img class="w-40 p-4 absolute -bottom-0 -right-20 hidden xs:block" alt="CSOD Logo" src={csod} />
-</section>
+</header>
 
 <Drawer.Root bind:open={showLicense}>
     <Drawer.Content class="mx-10">

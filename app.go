@@ -39,7 +39,8 @@ func (a *App) Quiz(file string, fileName string, fileType string, outputType str
 
 	// oneMinuteAgo := time.Now().Add(-1 * time.Minute)
 	// oneYearAgo := time.Now().AddDate(-1, 0, 0)
-	sixMonthsAgo := time.Now().AddDate(0, -6, 0)
+	// sixMonthsAgo := time.Now().AddDate(0, -6, 0)
+	eightMonthsAgo := time.Now().AddDate(0, -8, 0)
 
 	// Parse the build time
 	buildTimeValue, err := time.Parse(time.RFC3339Nano, buildTime)
@@ -48,7 +49,7 @@ func (a *App) Quiz(file string, fileName string, fileType string, outputType str
 		return "", errors.New("something went wrong, app not built with proper flags")
 	}
 
-	if buildTimeValue.Before(sixMonthsAgo) {
+	if buildTimeValue.Before(eightMonthsAgo) {
 		// log.Fatal("This build is stale")
 		return "", errors.New("something went wrong, please update the app")
 	}
