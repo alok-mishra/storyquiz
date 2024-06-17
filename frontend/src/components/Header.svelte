@@ -5,6 +5,8 @@
     import * as Popover from '$lib/components/ui/popover';
     import * as Drawer from '$lib/components/ui/drawer';
     import { Button } from '$lib/components/ui/button';
+    import * as Avatar from '$lib/components/ui/avatar';
+    import * as HoverCard from '$lib/components/ui/hover-card';
     import pkg from '../../package.json';
 
     import { BuildTime } from '../../wailsjs/go/main/App.js';
@@ -24,10 +26,10 @@
 
             const date = new Date(buildTime);
             buildDay = date.toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
+                // weekday: 'long',
                 month: 'long',
-                day: 'numeric',
+                // day: 'numeric',
+                year: 'numeric',
             });
         } catch (error) {
             console.error(error);
@@ -36,8 +38,30 @@
 </script>
 
 <header class="relative">
-    <h1 class="text-4xl font-black mt-4 text-orange-600">StoryQuiz</h1>
-    <h2 class="text-sm">(Quiz Exporter - v{pkg.version})</h2>
+    <div class="flex justify-end items-end">
+        <h1 class="text-4xl font-black mt-4 text-orange-600">StoryQuiz</h1>
+        <HoverCard.Root>
+            <HoverCard.Trigger><span class="text-cyan-200">@{pkg.version}</span></HoverCard.Trigger>
+            <HoverCard.Content class="w-80">
+                <div class="flex justify-between space-x-4">
+                    <Avatar.Root class="rounded-none">
+                        <Avatar.Image src={storyquiz} />
+                        <Avatar.Fallback>SQ</Avatar.Fallback>
+                    </Avatar.Root>
+                    <div class="space-y-1">
+                        <h4 class="text-sm font-semibold">StoryQuiz@{pkg.version} - {buildDay}</h4>
+                        <div class="flex items-center mt-2">
+                            <span class="text-xs text-muted-foreground"
+                                >You can now use your Word script document with integrated quiz questions to generate
+                                Storyline or Cornerstone Quiz import files!</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </HoverCard.Content>
+        </HoverCard.Root>
+    </div>
+    <h2 class="text-sm">(Quiz Exporter)</h2>
     <Popover.Root bind:open={showInfo}>
         <Popover.Trigger>
             <img class="w-40 xs:w-60 p-4" alt="StoryQuiz Logo" src={storyquiz} />
@@ -48,7 +72,7 @@
                     <img class="w-20 p-4" alt="StoryQuiz Logo" src={storyquiz} />
                 </div>
                 <div>
-                    <p class="text-lg font-bold text-orange-600">Story Quiz</p>
+                    <p class="text-lg font-bold text-orange-600">StoryQuiz</p>
                     <h4 class="text-sm font-semibold text-cyan-200">
                         <a href={`mailto:${email}`}>{email}</a>
                     </h4>
