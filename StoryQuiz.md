@@ -36,6 +36,15 @@ The app includes several error handling mechanisms to ensure a smooth user exper
 -   **Error Displays**: Errors are displayed in an easy format to help you quickly identify and resolve issues.
 -   **Progress Meter**: While processing files, a progress meter is displayed to keep you informed about the status.
 
+## Importing Quizzes into Storyline
+
+1. **Import Questions**: When importing the generated quiz file into Storyline, import the questions to a new scene.
+2. **Apply Layout**: Select all the slides in that scene and apply the "Questions with Headers" layout.
+3. **Set Feedback**: Set each slide to "Feedback: None" under the Question Tools Design tab.
+4. **Move Slides**: Select all of the slides and move them after slide 1.2.
+5. **Delete Empty Scene**: Delete the now-empty scene.
+6. **Review for Errors**: Review the slides for any errors and correct them as necessary.
+
 ## Keeping Up-to-Date
 
 To ensure compatibility and benefit from the latest features and improvements, it is recommended that users update to the latest version of the app every few months as standards and requirements change.
