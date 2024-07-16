@@ -1,6 +1,7 @@
+<style> body { font-size: 12px; } </style>
 <div style="display: flex; justify-content: center; align-items: center;">
-  <img src="https://raw.githubusercontent.com/alok-mishra/storyquiz/master/frontend/src/assets/images/storyquiz.svg" width="100" height="100" />
-  <span style="font-size: 4em; font-weight: bold; padding: 20px;">StoryQuiz</span>
+  <img src="https://raw.githubusercontent.com/alok-mishra/storyquiz/master/frontend/src/assets/images/storyquiz.svg" width="60" height="60" />
+  <span style="font-size: 3em; font-weight: bold; padding: 10px;">StoryQuiz</span>
 </div>
 
 ## Overview

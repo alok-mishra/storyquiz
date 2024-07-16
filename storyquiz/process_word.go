@@ -82,7 +82,8 @@ func ProcessWord(decodedBytes []byte) {
 
 	for _, table := range body.Tables {
 		if len(table.Rows) >= 6 { // Limit to tables with at least 6 rows
-			for _, row := range table.Rows[1:3] { // Limit to the second and third rows
+			// fmt.Println("Table with at least 6 rows")
+			for _, row := range table.Rows[1:4] { // Limit to the second to fourth rows
 				// Check if the first cell contains "Question #"
 				if len(row.Cells) > 0 && len(row.Cells[0].Content) > 0 &&
 					strings.Contains(row.Cells[0].Content[0], "Question #") {
@@ -94,7 +95,17 @@ func ProcessWord(decodedBytes []byte) {
 		}
 	}
 
-	courseCode = strings.Join(body.Tables[0].Rows[0].Cells[3].Content, "")
+	// // Pause for user input
+	// fmt.Println("Press 'Enter' to continue...")
+	// bufio.NewReader(os.Stdin).ReadBytes('\n')
+
+	if len(body.Tables[0].Rows[0].Cells) > 3 {
+		courseCode = strings.Join(body.Tables[0].Rows[0].Cells[3].Content, "")
+	} else {
+		courseCode = "CODEMISSING"
+	}
+
+	//wait
 
 	for _, table := range questionTables {
 		// Extract questions from the table
