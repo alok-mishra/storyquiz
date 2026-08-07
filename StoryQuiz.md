@@ -1,4 +1,5 @@
-<style> body { font-size: 12px; } </style>
+<main style="font-size: 12px;">
+
 <div style="display: flex; justify-content: center; align-items: center;">
   <img src="https://raw.githubusercontent.com/alok-mishra/storyquiz/master/frontend/src/assets/images/storyquiz.svg" width="60" height="60" />
   <span style="font-size: 3em; font-weight: bold; padding: 10px;">StoryQuiz</span>
@@ -17,25 +18,25 @@ The StoryQuiz application is a tool designed to streamline the process of creati
 
 ### Extracting Course Codes
 
--   Ensure your Word or Excel files contain the course code in the standard location.
--   The app will automatically detect and extract these codes for use in the output files.
+- Ensure your Word or Excel files contain the course code in the standard location.
+- The app will automatically detect and extract these codes for use in the output files.
 
 ### Viewing Version Information
 
--   Hover over the version displayed in the header to see the latest release notes.
+- Hover over the version displayed in the header to see the latest release notes.
 
 ## Output File Naming Convention
 
--   The output files will have the same name as the original script.
--   For Storyline, the output will be a txt file with (Storyline) appended to the end of the filename.
--   For Cornerstone, the output will be in Excel format with (LMS) appended to the end of the filename.
+- The output files will have the same name as the original script.
+- For Storyline, the output will be a txt file with (Storyline) appended to the end of the filename.
+- For Cornerstone, the output will be in Excel format with (LMS) appended to the end of the filename.
 
 ## Error Handling
 
 The app includes several error handling mechanisms to ensure a smooth user experience:
 
--   **Error Displays**: Errors are displayed in an easy format to help you quickly identify and resolve issues.
--   **Progress Meter**: While processing files, a progress meter is displayed to keep you informed about the status.
+- **Error Displays**: Errors are displayed in an easy format to help you quickly identify and resolve issues.
+- **Progress Meter**: While processing files, a progress meter is displayed to keep you informed about the status.
 
 ## Importing Quizzes into Storyline
 
@@ -46,6 +47,17 @@ The app includes several error handling mechanisms to ensure a smooth user exper
 5. **Delete Empty Scene**: Delete the now-empty scene.
 6. **Review for Errors**: Review the slides for any errors and correct them as necessary.
 
+<div style="page-break-after: always;"></div>
+
+## Adding Question Randomization using Quiz Bank
+
+1. **Follow Steps 1–6 above**: Import and prepare the question slides as described in the previous section.
+2. **Create Question Bank**: Go to **SLIDES**, select **Question Bank**, then select **Create new Question Bank** and give it a name.
+3. **Import into Bank**: Select **Import**. In the popup, set **Import from:** to "Story" and under **Import:** choose "Move questions into question bank." Select only the question slides.
+4. **Create Draw from Bank**: Go to the **Slides** tab, select **Question Bank**, and choose **New Draw from Question Bank**.
+5. **Configure Draw**: In the **Draw from Bank** menu, select your bank under the **Question Bank** pulldown, check **Draw questions randomly**, then select **Insert**.
+6. **Place Drawn Slide**: Ensure the inserted draw slide is placed after slide 1.2 in your project.
+
 ## Keeping Up-to-Date
 
 To ensure compatibility and benefit from the latest features and improvements, it is recommended that users update to the latest version of the app every few months as standards and requirements change.
@@ -53,3 +65,5 @@ To ensure compatibility and benefit from the latest features and improvements, i
 ## Contact and Support
 
 For further assistance or to report issues, please use the information provided in the app.
+
+</main>
